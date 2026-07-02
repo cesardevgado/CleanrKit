@@ -64,7 +64,7 @@ function updateSelectedCount() {
       box.closest(".option").textContent.trim().startsWith("Remove")
     );
   }).length;
-  selectedCount.textContent = `${selectedRemoveActions} of 5 selected`;
+  selectedCount.textContent = `${selectedRemoveActions} selected`;
 }
 
 function formatNumber(value) {

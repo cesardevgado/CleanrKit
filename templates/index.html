@@ -115,8 +115,19 @@
                     </label>
                 </div>
 
+                <div class="option-list">
+                    <label class="option" title="Converts copied characters into standard forms where possible, like ﬁ to fi and ＡＢＣ１２３ to ABC123.">
+                        <input type="checkbox" data-action="normalizeUnicode">
+                        <span>Normalize Unicode</span>
+                    </label>
+                    <label class="option" title="Removes anything outside basic English keyboard characters, like Café to Caf and Pokémon to Pokmon.">
+                        <input type="checkbox" data-action="removeNonAscii">
+                        <span>Remove non-ASCII characters</span>
+                    </label>
+                </div>
+
                 <div class="sidebar-footer">
-                    <span class="selected-count" id="selectedCount">0 of 5 selected</span>
+                    <span class="selected-count" id="selectedCount">0 selected</span>
                     <button class="reset-button" type="button" id="resetOptions">Reset</button>
                 </div>
             </aside>
@@ -198,6 +209,10 @@
                 </div>
             </section>
         </div>
+
+        <footer class="app-footer">
+            <p>Copyright © 2026 <a href="https://cesardelgado.dev" target="_blank" rel="noopener noreferrer">Cesar Delgado</a></p>
+        </footer>
     </main>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>

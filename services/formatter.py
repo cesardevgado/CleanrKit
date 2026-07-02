@@ -1,5 +1,6 @@
 import re
 import string
+import unicodedata
 
 
 def get_text_statistics(text):
@@ -18,6 +19,14 @@ def remove_urls(text):
     return re.sub(
         r"\bhttps?://[^\s<>\"']+|\bwww\.[^\s<>\"']+", "", text, flags=re.IGNORECASE
     )
+
+
+def normalize_unicode(text):
+    return unicodedata.normalize("NFKC", text)
+
+
+def remove_non_ascii(text):
+    return re.sub(r"[^\x00-\x7F]+", "", text)
 
 
 def replace_tabs(text, actions):
@@ -91,6 +100,8 @@ def apply_formatting(text, actions):
     }
     operation_map = {
         "removeUrls": remove_urls,
+        "normalizeUnicode": normalize_unicode,
+        "removeNonAscii": remove_non_ascii,
         "removeBlankLines": remove_blank_lines,
         "removeLeadingSpaces": remove_leading_spaces,
         "removeTrailingSpaces": remove_trailing_spaces,
