@@ -1,9 +1,10 @@
-████████╗ ██████╗ ██████╗ ███████╗██████╗  ██████╗ ███████╗
-╚══██╔══╝██╔═══██╗██╔══██╗██╔════╝██╔══██╗██╔═══██╗██╔════╝
-   ██║   ██║   ██║██████╔╝█████╗  ██████╔╝██║   ██║███████╗
-   ██║   ██║   ██║██╔═══╝ ██╔══╝  ██╔══██╗██║   ██║╚════██║
-   ██║   ╚██████╔╝██║     ███████╗██║  ██║╚██████╔╝███████║
-   ╚═╝    ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝
+ _______ ,---.  .-.   .-._______  .---.   ,--,  ,---.  .-. .-.,---.   ,---.   ,---.   
+|__   __|| .-'   ) \_/ /|__   __|( .-._).' .')  | .-.\ | | | || .-.\  | .-.\  | .-.\  
+  )| |   | `-.  (_)   /   )| |  (_) \   |  |(_) | `-'/ | | | || |-' \ | |-' \ | `-'/  
+ (_) |   | .-'    / _ \  (_) |  _  \ \  \  \    |   (  | | | || |--. \| |--. \|   (   
+   | |   |  `--. / / ) \   | | ( `-'  )  \  `-. | |\ \ | `-')|| |`-' /| |`-' /| |\ \  
+   `-'   /( __.'`-' (_)-'  `-'  `----'    \____\|_| \)\`---(_)/( `--' /( `--' |_| \)\ 
+        (__)                                        (__)     (__)    (__)         (__)
 
 # Product Requirements Document
 
@@ -11,10 +12,8 @@
 
 ### Overview
 TextScrubbr is a web-based text formatting utility designed to simplify document cleanup with an intuitive interface. Users can perform common text transformations without learning regular expressions, search codes, or word processor syntax.
-
 ### Problem Statement
 Most text editors and processors offer powerful Find & Replace tools, but they are often too technical for everyday users. Common tasks like removing line breaks, collapsing spaces, deleting tabs, and cleaning copied PDF text become frustrating because they require obscure syntax.
-
 ### Solution
 TextScrubbr replaces technical text cleanup steps with plain-language actions:
 - `Remove Paragraph Breaks`
@@ -24,7 +23,6 @@ TextScrubbr replaces technical text cleanup steps with plain-language actions:
 - `Trim Whitespace`
 
 The tool performs transformations instantly and shows a live preview of the cleaned result.
-
 ## 2. Goals
 
 The MVP must allow users to:
@@ -35,7 +33,6 @@ The MVP must allow users to:
 - Reset the editor quickly
 
 The UI should require no knowledge of regex or special formatting codes.
-
 ## 3. Target Users
 
 - Students: cleaning essays copied from PDFs
@@ -104,7 +101,6 @@ Every formatting action is an independent function, making the system easy to ex
 - `trim_whitespace()`
 
 This modular design supports adding new transformers without changing the core flow.
-
 ## 8. Non-Functional Requirements
 
 - Responsive on desktop and mobile

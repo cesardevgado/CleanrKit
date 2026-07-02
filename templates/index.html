@@ -1,819 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TextScrubbr</title>
-  <style>
-    :root {
-      color-scheme: light;
-      --bg: #f3f6fb;
-      --panel: #ffffff;
-      --panel-soft: #f8fafc;
-      --text: #101828;
-      --muted: #475467;
-      --border: #d9e0ea;
-      --line: #e9edf5;
-      --primary: #1f6feb;
-      --primary-dark: #1256d6;
-      --shadow: 0 18px 50px rgba(16, 24, 40, 0.08);
-      --focus: 0 0 0 3px rgba(31, 111, 235, 0.18);
-    }
-
-    :root.dark {
-      color-scheme: dark;
-      --bg: #12161f;
-      --panel: #1a2130;
-      --panel-soft: #202838;
-      --text: #f2f5f9;
-      --muted: #b9c2d2;
-      --border: #384355;
-      --line: #2a3445;
-      --primary: #5b8cff;
-      --primary-dark: #3d73f3;
-      --shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
-      --focus: 0 0 0 3px rgba(91, 140, 255, 0.24);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      min-height: 100vh;
-      margin: 0;
-      display: grid;
-      place-items: center;
-      padding: 16px;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      letter-spacing: 0;
-    }
-
-    button,
-    textarea,
-    input {
-      font: inherit;
-    }
-
-    button {
-      color: inherit;
-    }
-
-    .app {
-      width: 100%;
-      height: calc(100vh - 32px);
-      display: grid;
-      grid-template-rows: 68px minmax(0, 1fr);
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: var(--panel);
-      box-shadow: var(--shadow);
-    }
-
-    .topbar {
-      height: 68px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 0 28px 0 30px;
-      border-bottom: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.86);
-    }
-
-    :root.dark .topbar {
-      background: rgba(26, 33, 48, 0.9);
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .brand svg {
-      width: 28px;
-      height: 28px;
-      flex: 0 0 auto;
-      color: var(--primary);
-    }
-
-    .brand h1 {
-      margin: 0;
-      font-size: clamp(1.55rem, 2.1vw, 2rem);
-      line-height: 1;
-      font-weight: 800;
-      letter-spacing: 0;
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .icon-button,
-    .clear-button {
-      height: 40px;
-      border: 0;
-      background: transparent;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .clear-button {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 0 10px;
-      font-size: 0.9rem;
-      font-weight: 650;
-    }
-
-    .icon-button {
-      width: 40px;
-      display: grid;
-      place-items: center;
-    }
-
-    .icon-button.active {
-      background: var(--panel-soft);
-    }
-
-    .icon-button svg,
-    .clear-button svg,
-    .primary-button svg,
-    .secondary-button svg {
-      width: 19px;
-      height: 19px;
-      stroke-width: 2;
-    }
-
-    button:hover {
-      background: var(--panel-soft);
-    }
-
-    button:focus-visible,
-    textarea:focus-visible,
-    input:focus-visible {
-      outline: none;
-      box-shadow: var(--focus);
-    }
-
-    .shell {
-      display: grid;
-      grid-template-columns: 258px minmax(0, 1fr);
-      min-height: 0;
-      background: var(--panel-soft);
-    }
-
-    .sidebar {
-      display: flex;
-      flex-direction: column;
-      padding: 32px 26px 30px 30px;
-      border-right: 1px solid var(--line);
-      background: var(--panel);
-    }
-
-    .sidebar h2 {
-      width: max-content;
-      margin: 0 0 24px;
-      padding-bottom: 12px;
-      border-bottom: 3px solid var(--primary);
-      font-size: 1.08rem;
-      line-height: 1.1;
-      font-weight: 800;
-      letter-spacing: 0;
-    }
-
-    .option-list {
-      display: grid;
-      gap: 16px;
-    }
-
-    .option-list + .option-list {
-      margin-top: 28px;
-      padding-top: 26px;
-      border-top: 1px solid var(--line);
-    }
-
-    .option {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--text);
-      font-size: 0.96rem;
-      line-height: 1.2;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .option input {
-      width: 18px;
-      height: 18px;
-      margin: 0;
-      accent-color: var(--primary);
-      cursor: pointer;
-    }
-
-    .sidebar-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-top: auto;
-      padding-top: 30px;
-    }
-
-    .selected-count {
-      color: var(--muted);
-      font-size: 0.82rem;
-      white-space: nowrap;
-    }
-
-    .reset-button,
-    .secondary-button {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--panel);
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    .reset-button {
-      min-width: 74px;
-      height: 40px;
-    }
-
-    .workspace {
-      display: grid;
-      grid-template-rows: 1fr auto;
-      gap: 30px;
-      min-height: 0;
-      padding: 35px 30px;
-      background: var(--panel-soft);
-    }
-
-    .text-grid {
-      position: relative;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 36px;
-      align-items: stretch;
-      min-height: 0;
-    }
-
-    .pane {
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr);
-      min-height: 0;
-    }
-
-    .pane-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin: 0 8px 24px;
-    }
-
-    .pane-title {
-      margin: 0;
-      font-size: 1.25rem;
-      line-height: 1;
-      font-weight: 800;
-      letter-spacing: 0;
-    }
-
-    .pill {
-      min-width: 116px;
-      padding: 6px 11px;
-      border-radius: 8px;
-      background: #eef2f8;
-      color: var(--text);
-      text-align: center;
-      font-size: 0.82rem;
-      line-height: 1;
-    }
-
-    :root.dark .pill {
-      background: #263043;
-    }
-
-    .text-box {
-      display: block;
-      width: 100%;
-      height: 100%;
-      min-height: 0;
-      resize: none;
-      overflow: auto;
-      padding: 22px 18px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--panel);
-      color: var(--text);
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-      font-size: 0.95rem;
-      line-height: 1.95;
-      letter-spacing: 0;
-      white-space: pre-wrap;
-    }
-
-    .output-box {
-      user-select: text;
-    }
-
-    .run-button {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      z-index: 2;
-      width: 56px;
-      height: 56px;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: var(--panel);
-      box-shadow: 0 10px 24px rgba(16, 24, 40, 0.12);
-      transform: translate(-50%, -50%);
-      cursor: pointer;
-    }
-
-    .run-button svg {
-      width: 26px;
-      height: 26px;
-    }
-
-    .bottom-actions {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-    }
-
-    .primary-button,
-    .secondary-button {
-      height: 50px;
-      min-width: 174px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      padding: 0 24px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    .primary-button {
-      border: 1px solid var(--primary-dark);
-      border-radius: 8px;
-      background: var(--primary);
-      color: #ffffff;
-      font-weight: 800;
-      box-shadow: 0 8px 18px rgba(31, 111, 235, 0.2);
-    }
-
-    .primary-button:hover {
-      background: var(--primary-dark);
-    }
-
-    .toast {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      padding: 11px 14px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--panel);
-      color: var(--text);
-      box-shadow: var(--shadow);
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 160ms ease, transform 160ms ease;
-      pointer-events: none;
-      font-weight: 700;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 900px) {
-      body {
-        display: block;
-        padding: 12px;
-      }
-
-      .app {
-        height: auto;
-        min-height: calc(100vh - 24px);
-        grid-template-rows: auto auto;
-        overflow: visible;
-      }
-
-      .shell {
-        grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        border-right: 0;
-        border-bottom: 1px solid var(--line);
-      }
-
-      .option-list {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .text-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
-
-      .run-button {
-        position: static;
-        margin: -4px auto;
-        transform: none;
-      }
-
-      .text-box {
-        height: 280px;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .topbar,
-      .sidebar,
-      .workspace {
-        padding-left: 18px;
-        padding-right: 18px;
-      }
-
-      .topbar {
-        height: auto;
-        align-items: flex-start;
-        padding-top: 18px;
-        padding-bottom: 18px;
-      }
-
-      .brand h1 {
-        font-size: 1.45rem;
-      }
-
-      .clear-button span {
-        display: none;
-      }
-
-      .option-list {
-        grid-template-columns: 1fr;
-      }
-
-      .bottom-actions {
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .primary-button,
-      .secondary-button {
-        width: 100%;
-      }
-
-      .pane-header {
-        margin-left: 0;
-        margin-right: 0;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TextScrubbr</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
-  <main class="app" aria-label="TextScrubbr text formatting tool">
-    <header class="topbar">
-      <div class="brand">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 2l1.7 5.1L19 9l-5.3 1.9L12 16l-1.7-5.1L5 9l5.3-1.9L12 2z" fill="currentColor"></path>
-          <path d="M5 14l.9 2.6L9 18l-3.1 1.4L5 22l-.9-2.6L1 18l3.1-1.4L5 14zM20 14l.7 2.1L23 17l-2.3.9L20 20l-.7-2.1L17 17l2.3-.9L20 14z" fill="currentColor" opacity=".9"></path>
-        </svg>
-        <h1>TextScrubbr</h1>
-      </div>
-
-      <div class="top-actions">
-        <button class="clear-button" type="button" id="clearAll" title="Clear all text">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-            <path d="M21 12a9 9 0 1 1-2.64-6.36"></path>
-            <path d="M21 3v6h-6"></path>
-          </svg>
-          <span>Clear All</span>
-        </button>
-        <button class="icon-button" type="button" id="lightMode" title="Light mode" aria-label="Light mode">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-            <circle cx="12" cy="12" r="4"></circle>
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
-          </svg>
-        </button>
-        <button class="icon-button active" type="button" id="darkMode" title="Dark mode" aria-label="Dark mode">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-            <path d="M21 12.79A8.5 8.5 0 1 1 11.21 3a6.8 6.8 0 0 0 9.79 9.79z"></path>
-          </svg>
-        </button>
-      </div>
-    </header>
-
-    <div class="shell">
-      <aside class="sidebar" aria-label="Formatting options">
-        <h2>Clean &amp; Format</h2>
-
-        <div class="option-list">
-          <label class="option">
-            <input type="checkbox" data-action="removeLineBreaks" checked>
-            <span>Remove line breaks</span>
-          </label>
-          <label class="option">
-            <input type="checkbox" data-action="removeBlankLines" checked>
-            <span>Remove blank lines</span>
-          </label>
-          <label class="option">
-            <input type="checkbox" data-action="collapseSpaces" checked>
-            <span>Collapse multiple spaces</span>
-          </label>
-          <label class="option">
-            <input type="checkbox" data-action="removeTabs">
-            <span>Remove tabs</span>
-          </label>
-          <label class="option">
-            <input type="checkbox" data-action="trimWhitespace" checked>
-            <span>Trim whitespace</span>
-          </label>
-        </div>
-
-        <div class="option-list">
-          <label class="option">
-            <input type="checkbox" data-action="removeLeadingSpaces">
-            <span>Remove leading spaces</span>
-          </label>
-          <label class="option">
-            <input type="checkbox" data-action="removeTrailingSpaces">
-            <span>Remove trailing spaces</span>
-          </label>
-          <label class="option">
-            <input type="checkbox" data-action="removePunctuation">
-            <span>Remove punctuation</span>
-          </label>
-          <label class="option">
-            <input type="checkbox" data-action="removeNumbers">
-            <span>Remove numbers</span>
-          </label>
-          <label class="option">
-            <input type="checkbox" data-action="removeUrls">
-            <span>Remove URLs</span>
-          </label>
-        </div>
-
-        <div class="sidebar-footer">
-          <span class="selected-count" id="selectedCount">0 of 5 selected</span>
-          <button class="reset-button" type="button" id="resetOptions">Reset</button>
-        </div>
-      </aside>
-
-      <section class="workspace">
-        <div class="text-grid">
-          <section class="pane" aria-labelledby="inputHeading">
-            <div class="pane-header">
-              <h2 class="pane-title" id="inputHeading">Input</h2>
-              <span class="pill" id="inputCount">0 characters</span>
+    <main class="app" data-format-url="{{ url_for('format_text') }}" aria-label="TextScrubbr text formatting tool">
+        <header class="topbar">
+            <div class="brand">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2l1.7 5.1L19 9l-5.3 1.9L12 16l-1.7-5.1L5 9l5.3-1.9L12 2z" fill="currentColor"></path>
+                    <path
+                        d="M5 14l.9 2.6L9 18l-3.1 1.4L5 22l-.9-2.6L1 18l3.1-1.4L5 14zM20 14l.7 2.1L23 17l-2.3.9L20 20l-.7-2.1L17 17l2.3-.9L20 14z"
+                        fill="currentColor" opacity=".9"></path>
+                </svg>
+                <h1>TextScrubbr</h1>
             </div>
-            <textarea class="text-box" id="inputText" spellcheck="false">This is a  sample text
 
-with   irregular   spacing,
-
-multiple    spaces, and
-
-line breaks.
-
-It also    contains    tabs
-
-and extra blank  lines.
-
-Let's clean this up!</textarea>
-          </section>
-
-          <button class="run-button" type="button" id="formatNow" title="Format now" aria-label="Format now">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-              <path d="M5 12h14"></path>
-              <path d="m13 6 6 6-6 6"></path>
-            </svg>
-          </button>
-
-          <section class="pane" aria-labelledby="outputHeading">
-            <div class="pane-header">
-              <h2 class="pane-title" id="outputHeading">Output</h2>
-              <span class="pill" id="outputCount">0 characters</span>
+            <div class="top-actions">
+                <button class="clear-button" type="button" id="clearAll" title="Clear all text">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                        <path d="M21 12a9 9 0 1 1-2.64-6.36"></path>
+                        <path d="M21 3v6h-6"></path>
+                    </svg>
+                    <span>Clear All</span>
+                </button>
+                <button class="icon-button" type="button" id="lightMode" title="Light mode" aria-label="Light mode">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path
+                            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41">
+                        </path>
+                    </svg>
+                </button>
+                <button class="icon-button active" type="button" id="darkMode" title="Dark mode" aria-label="Dark mode">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                        <path d="M21 12.79A8.5 8.5 0 1 1 11.21 3a6.8 6.8 0 0 0 9.79 9.79z"></path>
+                    </svg>
+                </button>
             </div>
-            <output class="text-box output-box" id="outputText" aria-live="polite"></output>
-          </section>
+        </header>
+
+        <div class="shell">
+            <aside class="sidebar" aria-label="Formatting options">
+                <h2>Clean &amp; Format</h2>
+
+                <div class="option-list">
+                    <label class="option">
+                        <input type="checkbox" data-action="removeLineBreaks" checked>
+                        <span>Remove line breaks</span>
+                    </label>
+                    <div class="sub-options" data-parent-action="removeLineBreaks" aria-label="Line break replacement options">
+                        <label class="option sub-option">
+                            <input type="checkbox" data-action="replaceLineBreaksWithWhitespace" checked>
+                            <span>Replace with whitespace</span>
+                        </label>
+                        <label class="option sub-option">
+                            <input type="checkbox" data-action="replaceLineBreaksWithComma">
+                            <span>Replace with comma</span>
+                        </label>
+                    </div>
+                    <label class="option">
+                        <input type="checkbox" data-action="removeBlankLines" checked>
+                        <span>Remove blank lines</span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" data-action="collapseSpaces" checked>
+                        <span>Collapse multiple spaces</span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" data-action="removeTabs">
+                        <span>Remove tabs</span>
+                    </label>
+                    <div class="sub-options" data-parent-action="removeTabs" aria-label="Tab replacement options">
+                        <label class="option sub-option">
+                            <input type="checkbox" data-action="replaceTabsWithWhitespace">
+                            <span>Replace with whitespace</span>
+                        </label>
+                        <label class="option sub-option">
+                            <input type="checkbox" data-action="replaceTabsWithComma">
+                            <span>Replace with comma</span>
+                        </label>
+                    </div>
+                    <label class="option">
+                        <input type="checkbox" data-action="trimWhitespace" checked>
+                        <span>Trim whitespace</span>
+                    </label>
+                </div>
+
+                <div class="option-list">
+                    <label class="option">
+                        <input type="checkbox" data-action="removeLeadingSpaces">
+                        <span>Remove leading spaces</span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" data-action="removeTrailingSpaces">
+                        <span>Remove trailing spaces</span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" data-action="removePunctuation">
+                        <span>Remove punctuation</span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" data-action="removeNumbers">
+                        <span>Remove numbers</span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" data-action="removeUrls">
+                        <span>Remove URLs</span>
+                    </label>
+                </div>
+
+                <div class="sidebar-footer">
+                    <span class="selected-count" id="selectedCount">0 of 5 selected</span>
+                    <button class="reset-button" type="button" id="resetOptions">Reset</button>
+                </div>
+            </aside>
+
+            <section class="workspace">
+                <div class="text-grid">
+                    <section class="pane" aria-labelledby="inputHeading">
+                        <div class="pane-header">
+                            <h2 class="pane-title" id="inputHeading">Input</h2>
+                            <dl class="stats" aria-label="Input statistics">
+                                <div>
+                                    <dt>Characters</dt>
+                                    <dd id="inputCharacterCount">{{ input_statistics.num_characters }}</dd>
+                                </div>
+                                <div>
+                                    <dt>Words</dt>
+                                    <dd id="inputWordCount">{{ input_statistics.num_words }}</dd>
+                                </div>
+                                <div>
+                                    <dt>Lines</dt>
+                                    <dd id="inputLineCount">{{ input_statistics.num_lines }}</dd>
+                                </div>
+                            </dl>
+                        </div>
+                        <textarea class="text-box" id="inputText" spellcheck="false">{{ sample_text }}</textarea>
+                    </section>
+
+                    <button class="run-button" type="button" id="formatNow" title="Format now" aria-label="Format now">
+                        <svg class="format-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                            <path d="M5 12h14"></path>
+                            <path d="m13 6 6 6-6 6"></path>
+                        </svg>
+                        <span class="button-spinner" aria-hidden="true"></span>
+                    </button>
+
+                    <section class="pane" aria-labelledby="outputHeading">
+                        <div class="pane-header">
+                            <h2 class="pane-title" id="outputHeading">Output</h2>
+                            <dl class="stats" aria-label="Output statistics">
+                                <div>
+                                    <dt>Characters</dt>
+                                    <dd id="outputCharacterCount">{{ output_statistics.num_characters }}</dd>
+                                </div>
+                                <div>
+                                    <dt>Words</dt>
+                                    <dd id="outputWordCount">{{ output_statistics.num_words }}</dd>
+                                </div>
+                                <div>
+                                    <dt>Lines</dt>
+                                    <dd id="outputLineCount">{{ output_statistics.num_lines }}</dd>
+                                </div>
+                            </dl>
+                        </div>
+                        <output class="text-box output-box" id="outputText" aria-live="polite">{{ initial_output }}</output>
+                    </section>
+                </div>
+
+                <div class="bottom-actions">
+                    <button class="primary-button" type="button" id="copyOutput">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                            <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Copy
+                    </button>
+                    <dl class="reduction-card" aria-label="Text reduction statistics">
+                        <dt>Characters Removed</dt>
+                        <dd id="charactersRemovedCount">{{ reduction_statistics.characters_removed }}</dd>
+                        <dd class="reduction-percent" id="percentReduced">↓ {{ reduction_statistics.percent_reduced }}%</dd>
+                    </dl>
+                    <button class="secondary-button" type="button" id="downloadOutput">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <path d="M7 10l5 5 5-5"></path>
+                            <path d="M12 15V3"></path>
+                        </svg>
+                        Download .txt
+                    </button>
+                </div>
+            </section>
         </div>
+    </main>
 
-        <div class="bottom-actions">
-          <button class="primary-button" type="button" id="copyOutput">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-              <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-            Copy
-          </button>
-          <button class="secondary-button" type="button" id="downloadOutput">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <path d="M7 10l5 5 5-5"></path>
-              <path d="M12 15V3"></path>
-            </svg>
-            Download .txt
-          </button>
-        </div>
-      </section>
-    </div>
-  </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <script>
-    const formatUrl = "{{ url_for('format_text') }}";
-    const inputText = document.querySelector("#inputText");
-    const outputText = document.querySelector("#outputText");
-    const inputCount = document.querySelector("#inputCount");
-    const outputCount = document.querySelector("#outputCount");
-    const selectedCount = document.querySelector("#selectedCount");
-    const checkboxes = Array.from(document.querySelectorAll("[data-action]"));
-    const defaultActions = new Set([
-      "removeLineBreaks",
-      "removeBlankLines",
-      "collapseSpaces",
-      "trimWhitespace"
-    ]);
-    const initialText = inputText.value;
-    let toastTimer;
-    let latestRequestId = 0;
-
-    function pluralizeCharacters(count) {
-      return `${count.toLocaleString()} ${count === 1 ? "character" : "characters"}`;
-    }
-
-    function selectedActions() {
-      return checkboxes.filter((box) => box.checked).map((box) => box.dataset.action);
-    }
-
-    function formatText(text, actions = selectedActions()) {
-      const enabled = new Set(actions);
-      let formatted = text;
-
-      if (enabled.has("removeUrls")) {
-        formatted = formatted.replace(/\bhttps?:\/\/[^\s<>"']+|\bwww\.[^\s<>"']+/gi, "");
-      }
-
-      if (enabled.has("removeTabs")) {
-        formatted = formatted.replace(/\t/g, "");
-      }
-
-      if (enabled.has("removeBlankLines")) {
-        formatted = formatted.replace(/^[ \t]*\r?\n/gm, "");
-      }
-
-      if (enabled.has("removeLeadingSpaces")) {
-        formatted = formatted.replace(/^[ \t]+/gm, "");
-      }
-
-      if (enabled.has("removeTrailingSpaces")) {
-        formatted = formatted.replace(/[ \t]+$/gm, "");
-      }
-
-      if (enabled.has("removeLineBreaks")) {
-        formatted = formatted.replace(/\s*\r?\n\s*/g, " ");
-      }
-
-      if (enabled.has("collapseSpaces")) {
-        formatted = formatted.replace(/[ \t]{2,}/g, " ");
-      }
-
-      if (enabled.has("removeNumbers")) {
-        formatted = formatted.replace(/\d+/g, "");
-      }
-
-      if (enabled.has("removePunctuation")) {
-        formatted = formatted.replace(/[!"#$%&'()*+,./:;<=>?@[\\\]^_`{|}~-]/g, "");
-      }
-
-      if (enabled.has("trimWhitespace")) {
-        formatted = formatted.trim();
-      }
-
-      return formatted;
-    }
-
-    function updateSelectedCount() {
-      const selectedRemoveActions = checkboxes.filter((box) => {
-        return box.checked && box.closest(".option").textContent.trim().startsWith("Remove");
-      }).length;
-      selectedCount.textContent = `${selectedRemoveActions} of 5 selected`;
-    }
-
-    function updateOutput(formatted) {
-      outputText.textContent = formatted;
-      outputCount.textContent = pluralizeCharacters(formatted.length);
-    }
-
-    async function refresh() {
-      const actions = selectedActions();
-      const formatted = formatText(inputText.value, actions);
-      const requestId = ++latestRequestId;
-
-      updateOutput(formatted);
-      inputCount.textContent = pluralizeCharacters(inputText.value.length);
-      updateSelectedCount();
-
-      try {
-        const response = await fetch(formatUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: inputText.value, actions })
-        });
-
-        if (!response.ok) {
-          return;
-        }
-
-        const data = await response.json();
-        if (requestId === latestRequestId && typeof data.output === "string") {
-          updateOutput(data.output);
-        }
-      } catch {
-        // The local formatter above keeps the page usable if the API is unavailable.
-      }
-    }
-
-    function showToast(message) {
-      const toast = document.querySelector("#toast");
-      toast.textContent = message;
-      toast.classList.add("show");
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove("show"), 1600);
-    }
-
-    checkboxes.forEach((box) => {
-      box.addEventListener("change", refresh);
-    });
-
-    inputText.addEventListener("input", refresh);
-    document.querySelector("#formatNow").addEventListener("click", refresh);
-
-    document.querySelector("#resetOptions").addEventListener("click", () => {
-      checkboxes.forEach((box) => {
-        box.checked = defaultActions.has(box.dataset.action);
-      });
-      refresh();
-    });
-
-    document.querySelector("#clearAll").addEventListener("click", () => {
-      inputText.value = "";
-      refresh();
-      inputText.focus();
-    });
-
-    document.querySelector("#copyOutput").addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(outputText.textContent);
-        showToast("Copied");
-      } catch {
-        showToast("Copy unavailable");
-      }
-    });
-
-    document.querySelector("#downloadOutput").addEventListener("click", () => {
-      const file = new Blob([outputText.textContent], { type: "text/plain" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(file);
-      link.download = "textscrubbr-output.txt";
-      link.click();
-      URL.revokeObjectURL(link.href);
-      showToast("Downloaded");
-    });
-
-    document.querySelector("#lightMode").addEventListener("click", () => {
-      document.documentElement.classList.remove("dark");
-      document.querySelector("#lightMode").classList.add("active");
-      document.querySelector("#darkMode").classList.remove("active");
-    });
-
-    document.querySelector("#darkMode").addEventListener("click", () => {
-      document.documentElement.classList.add("dark");
-      document.querySelector("#darkMode").classList.add("active");
-      document.querySelector("#lightMode").classList.remove("active");
-    });
-
-    inputText.value = initialText;
-    refresh();
-  </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
+
 </html>

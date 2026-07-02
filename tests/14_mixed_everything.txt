@@ -1,0 +1,38 @@
+      Invoice #12345
+
+Customer:      César Delgado
+
+
+Website:
+
+https://textscrubbr.com
+
+Items:
+
+Apple      $10
+
+Banana           $20
+
+Orange             $30
+
+
+
+Visit us at:
+
+www.example.com
+
+Thank you!!!
+
+😀😀😀
+
+“Smart Quotes”
+
+Tabs		Tabs		Tabs
+
+Line
+Breaks
+Everywhere
+
+     Leading spaces
+
+Trailing spaces
