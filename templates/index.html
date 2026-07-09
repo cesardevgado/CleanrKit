@@ -50,11 +50,20 @@
                 <h2>Clean &amp; Format</h2>
 
                 <div class="option-list">
-                    <label class="option">
-                        <input type="checkbox" data-action="removeLineBreaks" checked>
-                        <span>Remove line breaks</span>
-                    </label>
-                    <div class="sub-options" data-parent-action="removeLineBreaks" aria-label="Line break replacement options">
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeLineBreaks" checked>
+                            <span>Remove line breaks</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Remove line breaks example">
+                            ?
+                            <span class="option-popover" role="tooltip"> Hello <br> world<br><span
+                                    class="after-arrow">↓</span><br> Hello
+                                world</span>
+                        </button>
+                    </div>
+                    <div class="sub-options" data-parent-action="removeLineBreaks"
+                        aria-label="Line break replacement options">
                         <label class="option sub-option">
                             <input type="checkbox" data-action="replaceLineBreaksWithWhitespace" checked>
                             <span>Replace with whitespace</span>
@@ -64,18 +73,40 @@
                             <span>Replace with comma</span>
                         </label>
                     </div>
-                    <label class="option">
-                        <input type="checkbox" data-action="removeBlankLines" checked>
-                        <span>Remove blank lines</span>
-                    </label>
-                    <label class="option">
-                        <input type="checkbox" data-action="collapseSpaces" checked>
-                        <span>Collapse multiple spaces</span>
-                    </label>
-                    <label class="option">
-                        <input type="checkbox" data-action="removeTabs">
-                        <span>Remove tabs</span>
-                    </label>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeBlankLines" checked>
+                            <span>Remove blank lines</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Remove blank lines example">
+                            ?
+                            <span class="option-popover" role="tooltip">Hello<br><br> world<br><span
+                                    class="after-arrow">↓</span><br>Hello
+                                <br>world</span>
+                        </button>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="collapseSpaces" checked>
+                            <span>Collapse multiple spaces</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Collapse multiple spaces example">
+                            ?
+                            <span class="option-popover" role="tooltip">Hello &nbsp; &nbsp; world<br><span
+                                    class="after-arrow">↓</span><br>Hello world</span>
+                        </button>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeTabs">
+                            <span>Remove tabs</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Remove tabs example">
+                            ?
+                            <span class="option-popover" role="tooltip">&#9;Name &#9;Email<br><span
+                                    class="after-arrow">↓</span><br>Name Email</span>
+                        </button>
+                    </div>
                     <div class="sub-options" data-parent-action="removeTabs" aria-label="Tab replacement options">
                         <label class="option sub-option">
                             <input type="checkbox" data-action="replaceTabsWithWhitespace">
@@ -86,44 +117,137 @@
                             <span>Replace with comma</span>
                         </label>
                     </div>
-                    <label class="option">
-                        <input type="checkbox" data-action="trimWhitespace" checked>
-                        <span>Trim whitespace</span>
-                    </label>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="trimWhitespace" checked>
+                            <span>Trim whitespace</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Trim whitespace example">
+                            ?
+                            <span class="option-popover" role="tooltip">
+                                <span class="popover-description">Removes extra whitespace only from the beginning and
+                                    end of the entire text</span>
+                                <br>····Hello world···
+                                <br><span class="after-arrow">↓</span><br>
+                                Hello world
+                            </span>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="option-list">
-                    <label class="option">
-                        <input type="checkbox" data-action="removeLeadingSpaces">
-                        <span>Remove leading spaces</span>
-                    </label>
-                    <label class="option">
-                        <input type="checkbox" data-action="removeTrailingSpaces">
-                        <span>Remove trailing spaces</span>
-                    </label>
-                    <label class="option">
-                        <input type="checkbox" data-action="removePunctuation">
-                        <span>Remove punctuation</span>
-                    </label>
-                    <label class="option">
-                        <input type="checkbox" data-action="removeNumbers">
-                        <span>Remove numbers</span>
-                    </label>
-                    <label class="option">
-                        <input type="checkbox" data-action="removeUrls">
-                        <span>Remove URLs</span>
-                    </label>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeLeadingSpaces">
+                            <span>Remove leading spaces</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Remove leading spaces example">
+                            ?
+                            <span class="option-popover" role="tooltip">···Indented<br>
+                                <span class="after-arrow">↓</span><br>
+                                Indented</span>
+                        </button>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeTrailingSpaces">
+                            <span>Remove trailing spaces</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Remove trailing spaces example">
+                            ?
+                            <span class="option-popover" role="tooltip">Hello···<br>
+                                <span class="after-arrow">↓</span><br>
+                                Hello</span>
+                        </button>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removePunctuation">
+                            <span>Remove punctuation</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Remove punctuation example">
+                            ?
+                            <span class="option-popover" role="tooltip">Hello, world!<br>
+                                <span class="after-arrow">↓</span><br>
+                                Hello world</span>
+                        </button>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeNumbers">
+                            <span>Remove numbers</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Remove numbers example">
+                            ?
+                            <span class="option-popover" role="tooltip">Order 123<br>
+                                <span class="after-arrow">↓</span><br>
+                                Order</span>
+                        </button>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeUrls">
+                            <span>Remove URLs</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Remove URLs example">
+                            ?
+                            <span class="option-popover" role="tooltip">Visit https://example.com<br>
+                                <span class="after-arrow">↓</span><br>
+                                Visit</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="option-list">
-                    <label class="option" title="Converts copied characters into standard forms where possible, like ﬁ to fi and ＡＢＣ１２３ to ABC123.">
-                        <input type="checkbox" data-action="normalizeUnicode">
-                        <span>Normalize Unicode</span>
-                    </label>
-                    <label class="option" title="Removes anything outside basic English keyboard characters, like Café to Caf and Pokémon to Pokmon.">
-                        <input type="checkbox" data-action="removeNonAscii">
-                        <span>Remove non-ASCII characters</span>
-                    </label>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeSmartQuotes">
+                            <span>Normalize Smart Quotes</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Normalize Smart Quotes example">
+                            ?
+                            <span class="option-popover" role="tooltip">“Hello”<br>
+                                <span class="after-arrow">↓</span><br>
+                                &quot;Hello&quot;</span>
+                        </button>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="normalizeUnicode">
+                            <span>Normalize Unicode</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Normalize Unicode example">
+                            ?
+                            <span class="option-popover" role="tooltip">fi and ＡＢＣ１２３<br>
+                                <span class="after-arrow">↓</span><br>
+                                fi and
+                                ABC123</span>
+                        </button>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="normalizeNonAscii">
+                            <span>Normalize non-ASCII characters</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Normalize non-ASCII characters example">
+                            ?
+                            <span class="option-popover" role="tooltip">Café<br>
+                                <span class="after-arrow">↓</span><br>
+                                Cafe</span>
+                        </button>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeNonAscii">
+                            <span>Remove non-ASCII characters</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Remove non-ASCII characters example">
+                            ?
+                            <span class="option-popover" role="tooltip">Café¾©<br>
+                                <span class="after-arrow">↓</span><br>
+                                Caf</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="sidebar-footer">
@@ -156,7 +280,8 @@
                     </section>
 
                     <button class="run-button" type="button" id="formatNow" title="Format now" aria-label="Format now">
-                        <svg class="format-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                        <svg class="format-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            aria-hidden="true">
                             <path d="M5 12h14"></path>
                             <path d="m13 6 6 6-6 6"></path>
                         </svg>
@@ -181,7 +306,8 @@
                                 </div>
                             </dl>
                         </div>
-                        <output class="text-box output-box" id="outputText" aria-live="polite">{{ initial_output }}</output>
+                        <output class="text-box output-box" id="outputText" aria-live="polite">{{ initial_output
+                            }}</output>
                     </section>
                 </div>
 
@@ -196,7 +322,8 @@
                     <dl class="reduction-card" aria-label="Text reduction statistics">
                         <dt>Characters Removed</dt>
                         <dd id="charactersRemovedCount">{{ reduction_statistics.characters_removed }}</dd>
-                        <dd class="reduction-percent" id="percentReduced">↓ {{ reduction_statistics.percent_reduced }}%</dd>
+                        <dd class="reduction-percent" id="percentReduced">↓ {{ reduction_statistics.percent_reduced }}%
+                        </dd>
                     </dl>
                     <button class="secondary-button" type="button" id="downloadOutput">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
@@ -211,7 +338,8 @@
         </div>
 
         <footer class="app-footer">
-            <p>Copyright © 2026 <a href="https://cesardelgado.dev" target="_blank" rel="noopener noreferrer">Cesar Delgado</a></p>
+            <p>Copyright © 2026 <a href="https://cesardelgado.dev" target="_blank" rel="noopener noreferrer">Cesar
+                    Delgado</a></p>
         </footer>
     </main>
 

@@ -9,8 +9,8 @@ with   irregular   spacing,
 
 multiple    spaces, and
 
-line breaks.
-It also    contains    tabs
+line breaks,
+
 
 and extra blank  lines.
 Let's clean this up!"""

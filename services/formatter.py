@@ -25,8 +25,30 @@ def normalize_unicode(text):
     return unicodedata.normalize("NFKC", text)
 
 
+def normalize_non_ascii(text):
+    decomposed_text = unicodedata.normalize("NFKD", text)
+    return "".join(
+        character
+        for character in decomposed_text
+        if not unicodedata.combining(character)
+    )
+
+
 def remove_non_ascii(text):
     return re.sub(r"[^\x00-\x7F]+", "", text)
+
+
+def remove_smart_quotes(text):
+    return text.translate(
+        str.maketrans(
+            {
+                "“": '"',
+                "”": '"',
+                "‘": "'",
+                "’": "'",
+            }
+        )
+    )
 
 
 def replace_tabs(text, actions):
@@ -100,7 +122,9 @@ def apply_formatting(text, actions):
     }
     operation_map = {
         "removeUrls": remove_urls,
+        "removeSmartQuotes": remove_smart_quotes,
         "normalizeUnicode": normalize_unicode,
+        "normalizeNonAscii": normalize_non_ascii,
         "removeNonAscii": remove_non_ascii,
         "removeBlankLines": remove_blank_lines,
         "removeLeadingSpaces": remove_leading_spaces,
