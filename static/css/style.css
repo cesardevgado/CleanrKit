@@ -2226,3 +2226,261 @@ input:focus-visible {
 .cta {
   font-size: 82px !important;
 }
+
+.mobile-menu-toggle,
+.suite-hero-start {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  body,
+  .suite-page {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    padding: 8px;
+  }
+
+  .mobile-menu-toggle {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-content: center;
+    gap: 5px;
+    flex: 0 0 auto;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--panel-soft);
+    color: currentColor;
+    cursor: pointer;
+  }
+
+  .mobile-menu-toggle span {
+    width: 20px;
+    height: 2px;
+    display: block;
+    border-radius: 999px;
+    background: currentColor;
+    transition: transform 160ms ease, opacity 160ms ease;
+  }
+
+  .mobile-menu-open .mobile-menu-toggle span:first-child {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .mobile-menu-open .mobile-menu-toggle span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-menu-open .mobile-menu-toggle span:last-child {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .suite-topbar {
+    min-height: 76px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    justify-items: stretch;
+    gap: 0 12px;
+    padding: 12px 16px;
+  }
+
+  .suite-logo {
+    justify-self: start;
+  }
+
+  .suite-logo .cleanrkit-wordmark {
+    font-size: 2rem;
+  }
+
+  .suite-logo .cleanrkit-sparkles {
+    width: 34px;
+    height: 29px;
+  }
+
+  .suite-topbar > .mobile-menu-toggle {
+    justify-self: end;
+  }
+
+  .suite-nav,
+  .suite-header-actions {
+    grid-column: 1 / -1;
+    display: none;
+  }
+
+  .suite-topbar.mobile-menu-open .suite-nav {
+    display: grid;
+    justify-content: stretch;
+    gap: 0;
+    padding-top: 12px;
+  }
+
+  .suite-nav a {
+    padding: 13px 4px;
+    border-top: 1px solid var(--line);
+    text-align: left;
+  }
+
+  .suite-topbar.mobile-menu-open .suite-header-actions {
+    display: flex;
+    width: auto;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+  }
+
+  .suite-header-actions .suite-start-button {
+    display: none;
+  }
+
+  .suite-hero {
+    padding: 32px 18px 38px;
+  }
+
+  .hero-pretitle {
+    margin-top: 0;
+    font-size: 1rem;
+  }
+
+  .hero-copy .cta {
+    font-size: clamp(2.65rem, 15vw, 4.15rem) !important;
+    line-height: 0.94;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .suite-hero-start {
+    width: fit-content;
+    display: inline-grid;
+    margin: 24px auto 0;
+  }
+
+  .mascot-stage {
+    display: none;
+  }
+
+  .app,
+  .app *,
+  .shell,
+  .sidebar,
+  .workspace,
+  .text-grid,
+  .pane,
+  .pane-header,
+  .pane-actions,
+  .bottom-actions {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .app {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .topbar {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0 12px;
+    padding: 12px 16px;
+  }
+
+  .brand {
+    min-width: 0;
+  }
+
+  .brand-icon,
+  .brand h1 {
+    display: none;
+  }
+
+  .brand-suite-logo {
+    border-right: 0;
+    padding-right: 0;
+  }
+
+  .brand-suite-logo .cleanrkit-wordmark {
+    font-size: 1.8rem;
+  }
+
+  .brand-suite-logo .cleanrkit-sparkles {
+    width: 32px;
+    height: 27px;
+  }
+
+  .topbar > .mobile-menu-toggle {
+    justify-self: end;
+  }
+
+  .top-actions {
+    grid-column: 1 / -1;
+    display: none;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .topbar.mobile-menu-open .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 12px;
+  }
+
+  .tool-nav {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    flex-basis: auto;
+    overflow: visible;
+  }
+
+  .tool-nav-link {
+    min-width: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .clear-button,
+  .top-actions .suite-theme-toggle {
+    flex: 0 0 auto;
+  }
+
+  .shell,
+  .workspace,
+  .text-grid {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .sidebar,
+  .workspace {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .pane-header,
+  .pane-actions,
+  .bottom-actions {
+    width: 100%;
+  }
+
+  .pane-header {
+    flex-wrap: wrap;
+  }
+
+  .pane-actions {
+    min-width: 0;
+    flex-wrap: wrap;
+  }
+
+  .text-box,
+  .numbered-editor,
+  .editor-shell,
+  textarea,
+  pre {
+    max-width: 100%;
+  }
+}

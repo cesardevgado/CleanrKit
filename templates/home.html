@@ -19,6 +19,7 @@
             <a class="suite-logo" href="{{ url_for('home') }}" aria-label="CleanrKit home">
                 {% include "_cleanrkit_brand.html" %}
             </a>
+            {% include "_mobile_menu_toggle.html" %}
             <nav class="suite-nav" aria-label="Homepage navigation">
                 <a href="#apps">Apps</a>
                 <a href="#features">Features</a>
@@ -40,6 +41,7 @@
                     <span>Easy.</span>
                 </h1>
                 <p class="hero-subtitle">Cleaner text. Better data. Smarter work.</p>
+                <a class="suite-start suite-start-button suite-hero-start" href="#apps">Get Started</a>
             </div>
             <div class="mascot-stage" aria-label="Scrubbr mascot">
                 <img class="mascot-image" src="{{ url_for('template_image', filename='scrubby.png') }}"
