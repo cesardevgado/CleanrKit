@@ -2478,6 +2478,10 @@ input:focus-visible {
     display: inline;
   }
 
+  .run-button .format-icon {
+    transform: rotate(90deg);
+  }
+
   :root.dark .mobile-clear-button {
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.24);
   }
