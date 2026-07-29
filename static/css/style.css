@@ -2403,17 +2403,27 @@ input:focus-visible {
   }
 
   .brand-suite-logo {
-    border-right: 0;
-    padding-right: 0;
+    padding-right: 8px;
+    border-right: 1px solid var(--border);
   }
 
   .brand-suite-logo .cleanrkit-wordmark {
-    font-size: 1.8rem;
+    font-size: clamp(1.15rem, 5.8vw, 1.45rem);
   }
 
   .brand-suite-logo .cleanrkit-sparkles {
-    width: 32px;
-    height: 27px;
+    width: 23px;
+    height: 21px;
+  }
+
+  .brand h1 {
+    display: block;
+    flex: 0 1 auto;
+    overflow: hidden;
+    font-size: clamp(0.68rem, 3vw, 0.92rem);
+    letter-spacing: -0.02em;
+    text-overflow: clip;
+    white-space: nowrap;
   }
 
   .topbar > .mobile-menu-toggle {
