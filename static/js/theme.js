@@ -73,3 +73,43 @@ document.addEventListener("keydown", (event) => {
     }
   });
 });
+
+document.querySelectorAll(".sidebar-toggle").forEach((toggle) => {
+  const sidebar = toggle.closest(".sidebar");
+
+  if (!sidebar) {
+    return;
+  }
+
+  const setSidebarOpen = (isOpen) => {
+    sidebar.classList.toggle("sidebar-open", isOpen);
+    toggle.setAttribute("aria-expanded", String(isOpen));
+  };
+
+  toggle.addEventListener("click", () => {
+    setSidebarOpen(!sidebar.classList.contains("sidebar-open"));
+  });
+
+  mobileMenuQuery.addEventListener("change", (event) => {
+    if (!event.matches) {
+      setSidebarOpen(false);
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (
+      mobileMenuQuery.matches &&
+      sidebar.classList.contains("sidebar-open") &&
+      !sidebar.contains(event.target)
+    ) {
+      setSidebarOpen(false);
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && sidebar.classList.contains("sidebar-open")) {
+      setSidebarOpen(false);
+      toggle.focus();
+    }
+  });
+});
