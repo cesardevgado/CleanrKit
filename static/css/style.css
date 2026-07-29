@@ -2242,6 +2242,10 @@ input:focus-visible {
     padding: 8px;
   }
 
+  body:not(.suite-page) {
+    padding-bottom: calc(82px + env(safe-area-inset-bottom));
+  }
+
   .mobile-menu-toggle {
     width: 46px;
     height: 46px;
