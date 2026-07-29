@@ -7,18 +7,22 @@ const inputLineCount = document.querySelector("#inputLineCount");
 const outputCharacterCount = document.querySelector("#outputCharacterCount");
 const outputWordCount = document.querySelector("#outputWordCount");
 const outputLineCount = document.querySelector("#outputLineCount");
-const charactersRemovedCount = document.querySelector("#charactersRemovedCount");
+const charactersRemovedCount = document.querySelector(
+  "#charactersRemovedCount",
+);
 const percentReduced = document.querySelector("#percentReduced");
 const selectedCount = document.querySelector("#selectedCount");
 const formatButton = document.querySelector("#formatNow");
 const checkboxes = Array.from(document.querySelectorAll("[data-action]"));
-const subOptionGroups = Array.from(document.querySelectorAll("[data-parent-action]"));
+const subOptionGroups = Array.from(
+  document.querySelectorAll("[data-parent-action]"),
+);
 const defaultActions = new Set([
   "removeLineBreaks",
   "replaceLineBreaksWithWhitespace",
   "removeBlankLines",
   "collapseSpaces",
-  "trimWhitespace"
+  "trimWhitespace",
 ]);
 const initialText = inputText.value;
 const minimumProcessingMs = 500;
@@ -37,7 +41,9 @@ function selectedActions() {
 
 function syncSubOptions() {
   subOptionGroups.forEach((group) => {
-    const parent = document.querySelector(`[data-action="${group.dataset.parentAction}"]`);
+    const parent = document.querySelector(
+      `[data-action="${group.dataset.parentAction}"]`,
+    );
     const enabled = parent?.checked ?? false;
     group.classList.toggle("is-disabled", !enabled);
     group.querySelectorAll("input").forEach((box) => {
@@ -98,17 +104,17 @@ function updateResult(data) {
     {
       characters: inputCharacterCount,
       words: inputWordCount,
-      lines: inputLineCount
+      lines: inputLineCount,
     },
-    data.input_statistics
+    data.input_statistics,
   );
   updateStats(
     {
       characters: outputCharacterCount,
       words: outputWordCount,
-      lines: outputLineCount
+      lines: outputLineCount,
     },
-    data.output_statistics
+    data.output_statistics,
   );
   updateReductionStats(data.reduction_statistics);
 }
@@ -131,7 +137,7 @@ async function refresh() {
     const response = await fetch(formatUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: inputText.value, actions })
+      body: JSON.stringify({ text: inputText.value, actions }),
     });
 
     if (!response.ok) {
@@ -217,22 +223,10 @@ document.querySelector("#downloadOutput").addEventListener("click", () => {
   const link = document.createElement("a");
   const today = formatDateForFilename(new Date());
   link.href = URL.createObjectURL(file);
-  link.download = `textscrubbr-output-${today}.txt`;
+  link.download = `TextCleanr-output-${today}.txt`;
   link.click();
   URL.revokeObjectURL(link.href);
   showToast("Downloaded");
-});
-
-document.querySelector("#lightMode").addEventListener("click", () => {
-  document.documentElement.classList.remove("dark");
-  document.querySelector("#lightMode").classList.add("active");
-  document.querySelector("#darkMode").classList.remove("active");
-});
-
-document.querySelector("#darkMode").addEventListener("click", () => {
-  document.documentElement.classList.add("dark");
-  document.querySelector("#darkMode").classList.add("active");
-  document.querySelector("#lightMode").classList.remove("active");
 });
 
 inputText.value = initialText;

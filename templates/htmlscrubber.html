@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTMLCleanr</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <main class="app" data-html-url="{{ url_for('format_html') }}" aria-label="HTMLCleanr HTML formatting tool">
+        <header class="topbar">
+            <div class="brand">
+                <a class="brand-suite-logo" href="{{ url_for('home') }}" aria-label="CleanrKit home">
+                    {% include "_cleanrkit_brand.html" %}
+                </a>
+                <img class="brand-icon" src="{{ url_for('template_image', filename='HTMLCleanr.svg') }}" alt=""
+                    aria-hidden="true">
+                <h1>HTMLCleanr</h1>
+            </div>
+
+            <div class="top-actions">
+                <nav class="tool-nav" aria-label="Tools">
+                    <a class="tool-nav-link tool-nav-home" href="{{ url_for('home') }}">Home</a>
+                    <a class="tool-nav-link" href="{{ url_for('text_scrubber') }}">Text</a>
+                    <a class="tool-nav-link" href="{{ url_for('json_scrubber') }}">JSON</a>
+                    <a class="tool-nav-link" href="{{ url_for('csv_scrubber') }}">CSV</a>
+                    <a class="tool-nav-link active" href="{{ url_for('html_scrubber') }}">HTML</a>
+                    <a class="tool-nav-link" href="{{ url_for('markdown_scrubber') }}">MD</a>
+                    <a class="tool-nav-link" href="{{ url_for('sql_scrubber') }}">SQL</a>
+                </nav>
+                <button class="clear-button" type="button" id="clearAll" title="Clear all HTML">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                        <path d="M21 12a9 9 0 1 1-2.64-6.36"></path>
+                        <path d="M21 3v6h-6"></path>
+                    </svg>
+                    <span>Clear All</span>
+                </button>
+                {% include "_theme_toggle.html" %}
+            </div>
+        </header>
+
+        <div class="shell">
+            <aside class="sidebar" aria-label="HTML options">
+                <h2>Clean &amp; Format</h2>
+
+                <div class="option-list">
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="formatHtml" checked>
+                            <span>Format HTML</span>
+                        </label>
+                    </div>
+                    <div class="sub-options" data-parent-action="formatHtml" aria-label="HTML formatting options">
+                        <label class="option sub-option">
+                            <input type="radio" name="formatMode" value="format" checked>
+                            <span>Format</span>
+                        </label>
+                        <label class="option sub-option">
+                            <input type="radio" name="formatMode" value="minify">
+                            <span>Minify HTML</span>
+                        </label>
+                        <h3 class="option-group-title">Indentation</h3>
+                        <label class="option sub-option">
+                            <input type="radio" name="indentSize" value="2" checked>
+                            <span>2 spaces</span>
+                        </label>
+                        <label class="option sub-option">
+                            <input type="radio" name="indentSize" value="4">
+                            <span>4 spaces</span>
+                        </label>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="plainText">
+                            <span>Strip tags to plain text</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="option-list">
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeComments" checked>
+                            <span>Remove comments</span>
+                        </label>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeScriptsStyles" checked>
+                            <span>Remove scripts and styles</span>
+                        </label>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeInlineStyles">
+                            <span>Remove inline styles</span>
+                        </label>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeClassesIds">
+                            <span>Remove classes and IDs</span>
+                        </label>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeEmptyElements">
+                            <span>Remove empty elements</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="option-list">
+                    <h3 class="option-group-title">Entities</h3>
+                    <label class="option">
+                        <input type="radio" name="entityMode" value="none" checked>
+                        <span>No entity change</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="entityMode" value="decode">
+                        <span>Decode entities</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="entityMode" value="encode">
+                        <span>Encode entities</span>
+                    </label>
+                </div>
+
+                <dl class="json-stats" aria-label="HTML statistics">
+                    <div>
+                        <dt>Elements</dt>
+                        <dd id="htmlElements">{{ output_statistics.elements }}</dd>
+                    </div>
+                    <div>
+                        <dt>Unique tags</dt>
+                        <dd id="htmlUniqueTags">{{ output_statistics.unique_tags }}</dd>
+                    </div>
+                    <div>
+                        <dt>Comments</dt>
+                        <dd id="htmlComments">{{ output_statistics.comments }}</dd>
+                    </div>
+                    <div>
+                        <dt>Scripts</dt>
+                        <dd id="htmlScripts">{{ output_statistics.scripts }}</dd>
+                    </div>
+                    <div>
+                        <dt>Styles</dt>
+                        <dd id="htmlStyles">{{ output_statistics.styles }}</dd>
+                    </div>
+                    <div>
+                        <dt>Links</dt>
+                        <dd id="htmlLinks">{{ output_statistics.links }}</dd>
+                    </div>
+                    <div>
+                        <dt>Images</dt>
+                        <dd id="htmlImages">{{ output_statistics.images }}</dd>
+                    </div>
+                </dl>
+
+                <div class="sidebar-footer">
+                    <span class="selected-count" id="selectedCount">0 selected</span>
+                    <button class="reset-button" type="button" id="resetOptions">Reset</button>
+                </div>
+            </aside>
+
+            <section class="workspace">
+                <div class="text-grid">
+                    <section class="pane" aria-labelledby="inputHeading">
+                        <div class="pane-header">
+                            <h2 class="pane-title" id="inputHeading">Input</h2>
+                            <dl class="stats" aria-label="Input statistics">
+                                <div>
+                                    <dt>Characters</dt>
+                                    <dd id="inputCharacterCount">{{ input_statistics.characters }}</dd>
+                                </div>
+                                <div>
+                                    <dt>Lines</dt>
+                                    <dd id="inputLineCount">{{ input_statistics.lines }}</dd>
+                                </div>
+                            </dl>
+                        </div>
+                        <div class="numbered-editor">
+                            <pre class="line-numbers" id="inputLineNumbers" aria-hidden="true">1</pre>
+                            <textarea class="text-box html-box" id="inputHtml" spellcheck="false"
+                                wrap="off">{{ sample_html }}</textarea>
+                        </div>
+                    </section>
+
+                    <button class="run-button" type="button" id="formatNow" title="Format now" aria-label="Format now">
+                        <svg class="format-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            aria-hidden="true">
+                            <path d="M5 12h14"></path>
+                            <path d="m13 6 6 6-6 6"></path>
+                        </svg>
+                        <span class="button-spinner" aria-hidden="true"></span>
+                    </button>
+
+                    <section class="pane" aria-labelledby="outputHeading">
+                        <div class="pane-header">
+                            <h2 class="pane-title" id="outputHeading">Output</h2>
+                            <div class="pane-actions">
+                                <button class="primary-button" type="button" id="copyOutput">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                        <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                    <span class="button-label">Copy</span>
+                                </button>
+                                <button class="secondary-button" type="button" id="downloadOutput">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <path d="M7 10l5 5 5-5"></path>
+                                        <path d="M12 15V3"></path>
+                                    </svg>
+                                    <span class="button-label">Download .html</span>
+                                </button>
+                            </div>
+                            <dl class="stats" aria-label="Output statistics">
+                                <div>
+                                    <dt>Characters</dt>
+                                    <dd id="outputCharacterCount">{{ output_statistics.characters }}</dd>
+                                </div>
+                                <div>
+                                    <dt>Lines</dt>
+                                    <dd id="outputLineCount">{{ output_statistics.lines }}</dd>
+                                </div>
+                            </dl>
+                        </div>
+                        <div class="numbered-editor">
+                            <pre class="line-numbers" id="outputLineNumbers" aria-hidden="true">1</pre>
+                            <output class="text-box output-box html-box" id="outputHtml" aria-live="polite">{{
+                                initial_output }}</output>
+                        </div>
+                    </section>
+                </div>
+
+            </section>
+        </div>
+
+        <footer class="app-footer">
+            <p>Copyright © 2026 <a href="https://cesardelgado.dev" target="_blank" rel="noopener noreferrer">Cesar
+                    Delgado</a></p>
+        </footer>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/htmlscrubber.js') }}"></script>
+</body>
+
+</html>

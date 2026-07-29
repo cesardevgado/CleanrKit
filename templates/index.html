@@ -4,24 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TextScrubbr</title>
+    <title>TextCleanr</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
-    <main class="app" data-format-url="{{ url_for('format_text') }}" aria-label="TextScrubbr text formatting tool">
+    <main class="app" data-format-url="{{ url_for('format_text') }}" aria-label="TextCleanr text formatting tool">
         <header class="topbar">
             <div class="brand">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 2l1.7 5.1L19 9l-5.3 1.9L12 16l-1.7-5.1L5 9l5.3-1.9L12 2z" fill="currentColor"></path>
-                    <path
-                        d="M5 14l.9 2.6L9 18l-3.1 1.4L5 22l-.9-2.6L1 18l3.1-1.4L5 14zM20 14l.7 2.1L23 17l-2.3.9L20 20l-.7-2.1L17 17l2.3-.9L20 14z"
-                        fill="currentColor" opacity=".9"></path>
-                </svg>
-                <h1>TextScrubbr</h1>
+                <a class="brand-suite-logo" href="{{ url_for('home') }}" aria-label="CleanrKit home">
+                    {% include "_cleanrkit_brand.html" %}
+                </a>
+                <img class="brand-icon" src="{{ url_for('template_image', filename='TextCleanr.svg') }}" alt=""
+                    aria-hidden="true">
+                <h1>TextCleanr</h1>
             </div>
 
             <div class="top-actions">
+                <nav class="tool-nav" aria-label="Tools">
+                    <a class="tool-nav-link tool-nav-home" href="{{ url_for('home') }}">Home</a>
+                    <a class="tool-nav-link active" href="{{ url_for('text_scrubber') }}">Text</a>
+                    <a class="tool-nav-link" href="{{ url_for('json_scrubber') }}">JSON</a>
+                    <a class="tool-nav-link" href="{{ url_for('csv_scrubber') }}">CSV</a>
+                    <a class="tool-nav-link" href="{{ url_for('html_scrubber') }}">HTML</a>
+                    <a class="tool-nav-link" href="{{ url_for('markdown_scrubber') }}">MD</a>
+                    <a class="tool-nav-link" href="{{ url_for('sql_scrubber') }}">SQL</a>
+                </nav>
                 <button class="clear-button" type="button" id="clearAll" title="Clear all text">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                         <path d="M21 12a9 9 0 1 1-2.64-6.36"></path>
@@ -29,19 +37,7 @@
                     </svg>
                     <span>Clear All</span>
                 </button>
-                <button class="icon-button" type="button" id="lightMode" title="Light mode" aria-label="Light mode">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                        <circle cx="12" cy="12" r="4"></circle>
-                        <path
-                            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41">
-                        </path>
-                    </svg>
-                </button>
-                <button class="icon-button active" type="button" id="darkMode" title="Dark mode" aria-label="Dark mode">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                        <path d="M21 12.79A8.5 8.5 0 1 1 11.21 3a6.8 6.8 0 0 0 9.79 9.79z"></path>
-                    </svg>
-                </button>
+                {% include "_theme_toggle.html" %}
             </div>
         </header>
 
@@ -291,6 +287,23 @@
                     <section class="pane" aria-labelledby="outputHeading">
                         <div class="pane-header">
                             <h2 class="pane-title" id="outputHeading">Output</h2>
+                            <div class="pane-actions">
+                                <button class="primary-button" type="button" id="copyOutput">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                        <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                    <span class="button-label">Copy</span>
+                                </button>
+                                <button class="secondary-button" type="button" id="downloadOutput">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <path d="M7 10l5 5 5-5"></path>
+                                        <path d="M12 15V3"></path>
+                                    </svg>
+                                    <span class="button-label">Download .txt</span>
+                                </button>
+                            </div>
                             <dl class="stats" aria-label="Output statistics">
                                 <div>
                                     <dt>Characters</dt>
@@ -312,27 +325,12 @@
                 </div>
 
                 <div class="bottom-actions">
-                    <button class="primary-button" type="button" id="copyOutput">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                            <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                        Copy
-                    </button>
                     <dl class="reduction-card" aria-label="Text reduction statistics">
                         <dt>Characters Removed</dt>
                         <dd id="charactersRemovedCount">{{ reduction_statistics.characters_removed }}</dd>
                         <dd class="reduction-percent" id="percentReduced">↓ {{ reduction_statistics.percent_reduced }}%
                         </dd>
                     </dl>
-                    <button class="secondary-button" type="button" id="downloadOutput">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <path d="M7 10l5 5 5-5"></path>
-                            <path d="M12 15V3"></path>
-                        </svg>
-                        Download .txt
-                    </button>
                 </div>
             </section>
         </div>
@@ -345,6 +343,7 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 
