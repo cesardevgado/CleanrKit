@@ -2449,6 +2449,25 @@ input:focus-visible {
     flex: 0 0 auto;
   }
 
+  .mobile-clear-button {
+    width: fit-content;
+    display: inline-flex;
+    justify-self: end;
+    margin: 0 0 -8px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    box-shadow: 0 4px 12px rgba(16, 24, 40, 0.08);
+  }
+
+  .mobile-clear-button span {
+    display: inline;
+  }
+
+  :root.dark .mobile-clear-button {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.24);
+  }
+
   .shell,
   .workspace,
   .text-grid {

@@ -113,3 +113,35 @@ document.querySelectorAll(".sidebar-toggle").forEach((toggle) => {
     }
   });
 });
+
+document.querySelectorAll(".app").forEach((app) => {
+  const clearButton = app.querySelector(".clear-button");
+  const workspace = app.querySelector(".workspace");
+  const textGrid = workspace?.querySelector(".text-grid");
+
+  if (!clearButton || !workspace || !textGrid || !clearButton.parentNode) {
+    return;
+  }
+
+  const originalPosition = document.createComment("clear-button-position");
+  clearButton.parentNode.insertBefore(originalPosition, clearButton);
+
+  const placeClearButton = (isMobile) => {
+    if (isMobile) {
+      clearButton.classList.add("mobile-clear-button");
+      workspace.insertBefore(clearButton, textGrid);
+      return;
+    }
+
+    clearButton.classList.remove("mobile-clear-button");
+    originalPosition.parentNode?.insertBefore(
+      clearButton,
+      originalPosition.nextSibling,
+    );
+  };
+
+  placeClearButton(mobileMenuQuery.matches);
+  mobileMenuQuery.addEventListener("change", (event) => {
+    placeClearButton(event.matches);
+  });
+});
