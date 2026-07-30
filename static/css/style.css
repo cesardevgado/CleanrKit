@@ -2031,11 +2031,11 @@ input:focus-visible {
   }
 
   .text-box {
-    height: 280px;
+    height: 360px;
   }
 
   .numbered-editor {
-    height: 280px;
+    height: 360px;
   }
 
   .pane {
@@ -2267,7 +2267,9 @@ input:focus-visible {
     display: block;
     border-radius: 999px;
     background: currentColor;
-    transition: transform 160ms ease, opacity 160ms ease;
+    transition:
+      transform 160ms ease,
+      opacity 160ms ease;
   }
 
   .mobile-menu-open .mobile-menu-toggle span:first-child {
@@ -2358,7 +2360,7 @@ input:focus-visible {
   .suite-hero-start {
     width: fit-content;
     display: inline-grid;
-    margin: 24px auto 0;
+    margin: 24px auto 28px;
   }
 
   .mascot-stage {
@@ -2420,7 +2422,7 @@ input:focus-visible {
     display: block;
     flex: 0 1 auto;
     overflow: hidden;
-    font-size: clamp(0.68rem, 3vw, 0.92rem);
+    font-size: clamp(0.68rem, 4vw, 1.2rem);
     letter-spacing: -0.02em;
     text-overflow: clip;
     white-space: nowrap;
@@ -2572,7 +2574,7 @@ input:focus-visible {
   }
 
   .app .option-popover {
-    right: 50px;
+    right: 30px;
     width: max-content;
     max-width: min(220px, calc(100vw - 64px));
     overflow-wrap: anywhere;
