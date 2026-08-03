@@ -4,209 +4,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CleanrKit</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8599123009684060"
-        crossorigin="anonymous"></script>
+    <meta name="description" content="Clean, format, and validate text, JSON, CSV, HTML, Markdown, and SQL in your browser with CleanrKit.">
+    <title>CleanrKit — Clean data. Better results.</title>
     <script>
         if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
             document.documentElement.classList.add("dark");
         }
     </script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage.css') }}">
 </head>
 
-<body class="suite-page">
-    <main class="suite-home" aria-label="CleanrKit home">
-        <header class="suite-topbar">
-            <a class="suite-logo" href="{{ url_for('home') }}" aria-label="CleanrKit home">
+<body class="suite-page landing-page">
+    <main class="suite-home landing-shell" aria-label="CleanrKit home">
+        <header class="suite-topbar landing-header">
+            <a class="suite-logo landing-logo" href="{{ url_for('home') }}" aria-label="CleanrKit home">
                 {% include "_cleanrkit_brand.html" %}
             </a>
             {% include "_mobile_menu_toggle.html" %}
-            <nav class="suite-nav" aria-label="Homepage navigation">
-                <a href="#apps">Apps</a>
-                <a href="#features">Features</a>
-                <a href="#pricing">Pricing</a>
+            <nav class="suite-nav landing-nav" aria-label="Homepage navigation">
+                <a href="#tools">Tools</a>
+                <a href="#why-cleanrkit">Features</a>
                 <a href="#about">About</a>
             </nav>
-            <div class="suite-header-actions">
+            <div class="suite-header-actions landing-actions">
                 {% include "_theme_toggle.html" %}
-                <a class="suite-start suite-start-button" href="#apps">Get Started</a>
+                <a class="landing-login" href="{{ url_for('text_scrubber') }}">Open app</a>
+                <a class="landing-button landing-button-small" href="#tools">Get started free</a>
             </div>
         </header>
 
-        <section class="suite-hero">
-            <div class="hero-copy">
-                <p class="hero-pretitle">All your cleaning tools in one place!</p>
-                <h1 class="cta">
-                    <span>Fast.</span>
-                    <strong>Free.</strong>
-                    <span>Easy.</span>
-                </h1>
-                <p class="hero-subtitle">Cleaner text. Better data. Smarter work.</p>
-                <a class="suite-start suite-start-button suite-hero-start" href="#apps">Get Started</a>
-            </div>
-            <div class="mascot-stage" aria-label="Scrubbr mascot">
-                <img class="mascot-image" src="{{ url_for('template_image', filename='scrubby.png') }}"
-                    alt="CleanrKit scrubber mascot">
-            </div>
-        </section>
-
-        <section class="scrubbr-panel" id="apps" aria-label="The Scrubbr tools">
-            <div class="panel-title">
-                <span></span>
-                <h2>The Cleanrs</h2>
-                <span></span>
-            </div>
-
-            <div class="scrubbr-grid">
-                <a class="scrubbr-card" href="{{ url_for('text_scrubber') }}">
-                    <img class="scrubbr-icon" src="{{ url_for('template_image', filename='textcleanr.svg') }}" alt=""
-                        aria-hidden="true">
-                    <h3>TextCleanr</h3>
-                    <p>Clean and format any text</p>
-                </a>
-
-                <a class="scrubbr-card" href="{{ url_for('json_scrubber') }}">
-                    <img class="scrubbr-icon" src="{{ url_for('template_image', filename='jsoncleanr.svg') }}" alt=""
-                        aria-hidden="true">
-                    <h3>JSONCleanr</h3>
-                    <p>Validate and beautify JSON</p>
-                </a>
-                <!-- 
-                <span class="scrubbr-card is-coming">
-                    <svg viewBox="0 0 64 64" aria-hidden="true">
-                        <circle cx="32" cy="32" r="27"></circle>
-                        <path
-                            d="M21 21h22v22H21zM16 28v-9a3 3 0 0 1 3-3h9M48 28v-9a3 3 0 0 0-3-3h-9M16 36v9a3 3 0 0 0 3 3h9M48 36v9a3 3 0 0 1-3 3h-9">
-                        </path>
-                        <text x="32" y="38">OCR</text>
-                    </svg>
-                    <h3>OCRScrubbr</h3>
-                    <p>Extract and clean scanned text</p>
-                </span> -->
-
-                <a class="scrubbr-card" href="{{ url_for('csv_scrubber') }}">
-                    <img class="scrubbr-icon" src="{{ url_for('template_image', filename='csvcleanr.svg') }}" alt=""
-                        aria-hidden="true">
-                    <h3>CSVCleanr</h3>
-                    <p>Tidy and normalize your CSVs</p>
-                </a>
-
-                <a class="scrubbr-card" href="{{ url_for('html_scrubber') }}">
-                    <img class="scrubbr-icon" src="{{ url_for('template_image', filename='htmlcleanr.svg') }}" alt=""
-                        aria-hidden="true">
-                    <h3>HTMLCleanr</h3>
-                    <p>Minify and clean HTML</p>
-                </a>
-
-                <a class="scrubbr-card" href="{{ url_for('markdown_scrubber') }}">
-                    <img class="scrubbr-icon" src="{{ url_for('template_image', filename='markdowncleanr.svg') }}"
-                        alt="" aria-hidden="true">
-                    <h3>MarkdownCleanr</h3>
-                    <p>Clean and convert Markdown</p>
-                </a>
-
-                <!-- <span class="scrubbr-card is-coming">
-                    <svg viewBox="0 0 64 64" aria-hidden="true">
-                        <circle cx="32" cy="32" r="27"></circle>
-                        <path d="M20 18h24v18H28l-8 8V18zM25 25h14M25 31h10"></path>
-                    </svg>
-                    <h3>PromptScrubbr</h3>
-                    <p>Polish prompts for better output</p>
-                </span> -->
-
-                <a class="scrubbr-card" href="{{ url_for('sql_scrubber') }}">
-                    <img class="scrubbr-icon" src="{{ url_for('template_image', filename='sqlcleanr.svg') }}" alt=""
-                        aria-hidden="true">
-                    <h3>SQLCleanr</h3>
-                    <p>Optimize and format SQL</p>
-                </a>
-            </div>
-        </section>
-
-        <section class="suite-features" id="features">
-            <div class="suite-feature-band">
-                <p>One Suite.</p>
-                <strong>All your cleaning tools.</strong>
-                <p class="built-for" aria-label="Built for developers, everyone, analysts, and you.">
-                    <span aria-hidden="true">Built for <span class="built-for-word">developers</span></span>
+        <section class="landing-hero">
+            <div class="landing-hero-copy">
+                <p class="privacy-pill">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+                    Privacy-first. Your data stays in your browser.
                 </p>
+                <h1>Clean data.<br><strong>Better</strong> results.</h1>
+                <p class="landing-lede">A fast, private collection of browser tools that cleans, formats, and validates your text, code, and structured data.</p>
+                <div class="landing-hero-actions">
+                    <a class="landing-button" href="#tools">Explore the tools <span aria-hidden="true">→</span></a>
+                    <a class="landing-button landing-button-secondary" href="{{ url_for('text_scrubber') }}">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"></path></svg>
+                        Try TextCleanr
+                    </a>
+                </div>
+                <ul class="landing-proof" aria-label="Product benefits">
+                    <li><span aria-hidden="true">↓</span>No installation</li>
+                    <li><span aria-hidden="true">◉</span>Works in your browser</li>
+                    <li><span aria-hidden="true">◇</span>Free to start</li>
+                </ul>
             </div>
-            <div class="suite-section-copy">
-                <h3>Everything you need</h3>
-                <h2>Clean up your content without the busywork.</h2>
-                <p>Move from messy input to clean, usable output with focused tools for the formats you use every
-                    day.</p>
+
+            <div class="product-preview" aria-label="TextCleanr product preview">
+                <div class="preview-toolbar">
+                    <span class="preview-brand"><span class="preview-mark">✦</span> TextCleanr</span>
+                    <div class="preview-tabs" aria-hidden="true">
+                        <span class="is-active">Input</span><span>Output</span><span>Stats</span>
+                    </div>
+                </div>
+                <div class="preview-workspace">
+                    <div class="preview-pane">
+                        <div class="preview-label"><span>Original text</span><span>312 chars</span></div>
+                        <pre>This   is   a sample
+text with  messy formatting.
+
+• Extra    spaces
+• Weird line   breaks
+• Tabs\t       here
+
+Let's clean it up!</pre>
+                    </div>
+                    <div class="preview-arrow" aria-hidden="true">→</div>
+                    <div class="preview-pane preview-clean">
+                        <div class="preview-label"><span>Cleaned text</span><span>✓ Ready</span></div>
+                        <pre>This is a sample text with
+messy formatting.
+
+• Extra spaces
+• Weird line breaks
+• Tabs here
+
+Let's clean it up!</pre>
+                    </div>
+                </div>
+                <div class="preview-footer">
+                    <span>Words: 20</span><span>Lines: 8</span>
+                    <a href="{{ url_for('text_scrubber') }}">Clean text</a>
+                </div>
             </div>
-            <ul class="feature-list">
-                <li><strong>Six focused cleaners</strong><span>Work with text, JSON, CSV, HTML, Markdown, and
-                        SQL.</span></li>
-                <li><strong>Instant results</strong><span>See formatted output, useful statistics, and validation as
-                        you work.</span></li>
-                <li><strong>Flexible controls</strong><span>Choose the cleanup and formatting options that fit each
-                        task.</span></li>
-                <li><strong>Ready to use anywhere</strong><span>Copy your result or download it in the right file
-                        format.</span></li>
-            </ul>
         </section>
 
-        <section class="suite-pricing" id="pricing">
-            <div class="suite-section-copy">
-                <h3 class="suite-eyebrow">Simple pricing</h3>
-                <h2>Start cleaning for free.</h2>
-                <p>Use the complete collection today. Pro is on the way for people who need more from their
-                    workflow.</p>
+        <section class="tools-section" id="tools" aria-labelledby="tools-heading">
+            <div class="section-heading-row">
+                <div>
+                    <p class="section-kicker">One kit. Six focused tools.</p>
+                    <h2 id="tools-heading">Pick a cleaner and get to work.</h2>
+                </div>
+                <span class="section-note">Fast, focused, and easy to use.</span>
             </div>
-            <div class="pricing-grid">
-                <article class="pricing-card is-featured">
-                    <p class="pricing-label">Free</p>
-                    <h3>$0 <span>/ forever</span></h3>
-                    <p>Everything you need for quick, everyday cleanup.</p>
-                    <ul>
-                        <li>All six Cleanr tools</li>
-                        <li>Formatting and cleanup controls</li>
-                        <li>Live statistics and validation</li>
-                        <li>Copy and file downloads</li>
-                    </ul>
-                    <a class="pricing-action" href="#apps">Start cleaning</a>
-                </article>
-                <article class="pricing-card">
-                    <p class="pricing-label">Pro <span class="coming-badge">Coming soon</span></p>
-                    <h3>More power <span>for bigger workflows</span></h3>
-                    <p>Advanced capabilities for frequent and professional use.</p>
-                    <ul>
-                        <li>Everything included in Free</li>
-                        <li>Saved cleanup presets</li>
-                        <li>Enhanced file and batch workflows</li>
-                        <li>More advanced productivity features</li>
-                    </ul>
-                    <span class="pricing-action is-disabled">Coming soon</span>
-                </article>
+            <div class="landing-tools-grid">
+                <a class="landing-tool-card tool-blue" href="{{ url_for('text_scrubber') }}">
+                    <span class="tool-icon" aria-hidden="true"><i data-lucide="type">T</i></span>
+                    <h3>TextCleanr</h3><p>Clean, format, and normalize text with powerful options.</p><span>Open tool →</span>
+                </a>
+                <a class="landing-tool-card tool-green" href="{{ url_for('json_scrubber') }}">
+                    <span class="tool-icon" aria-hidden="true"><i data-lucide="braces">{ }</i></span>
+                    <h3>JSONCleanr</h3><p>Validate, format, sort, and clean JSON data instantly.</p><span>Open tool →</span>
+                </a>
+                <a class="landing-tool-card tool-orange" href="{{ url_for('html_scrubber') }}">
+                    <span class="tool-icon" aria-hidden="true"><i data-lucide="code-xml">&lt;/&gt;</i></span>
+                    <h3>HTMLCleanr</h3><p>Beautify, minify, and clean up HTML markup.</p><span>Open tool →</span>
+                </a>
+                <a class="landing-tool-card tool-purple" href="{{ url_for('sql_scrubber') }}">
+                    <span class="tool-icon" aria-hidden="true"><i data-lucide="database">DB</i></span>
+                    <h3>SQLCleanr</h3><p>Format and optimize SQL queries for easier reading.</p><span>Open tool →</span>
+                </a>
+                <a class="landing-tool-card tool-cyan" href="{{ url_for('csv_scrubber') }}">
+                    <span class="tool-icon" aria-hidden="true"><i data-lucide="table-properties">CSV</i></span>
+                    <h3>CSVCleanr</h3><p>Tidy rows, normalize headers, and remove duplicates.</p><span>Open tool →</span>
+                </a>
+                <a class="landing-tool-card tool-pink" href="{{ url_for('markdown_scrubber') }}">
+                    <span class="tool-icon" aria-hidden="true"><i data-lucide="file-code-2">MD</i></span>
+                    <h3>MarkdownCleanr</h3><p>Clean and normalize Markdown for consistent output.</p><span>Open tool →</span>
+                </a>
             </div>
         </section>
 
-        <section class="suite-about" id="about">
-            <div class="about-mark" aria-label="CleanrKit">
-                {% include "_cleanrkit_brand.html" %}
-            </div>
+        <section class="benefit-band" id="why-cleanrkit" aria-label="Why CleanrKit">
+            <article><span class="benefit-icon">♢</span><div><h3>Privacy first</h3><p>Your content stays in your browser.</p></div></article>
+            <article><span class="benefit-icon">ϟ</span><div><h3>Blazing fast</h3><p>Instant results without upload queues.</p></div></article>
+            <article><span class="benefit-icon">▣</span><div><h3>Works anywhere</h3><p>No installation or account required.</p></div></article>
+            <article><span class="benefit-icon">☆</span><div><h3>Built for focus</h3><p>Simple tools without the busywork.</p></div></article>
+        </section>
+
+        <section class="stats-band" aria-label="CleanrKit product coverage">
+            <div><strong>6</strong><span>focused cleaners</span></div>
+            <div><strong>100%</strong><span>browser based</span></div>
+            <div><strong>0</strong><span>uploads required</span></div>
+            <div><strong>Free</strong><span>to get started</span></div>
+        </section>
+
+        <section class="landing-cta" id="about">
             <div>
-                <h3 class="suite-eyebrow">About CleanrKit</h3>
-                <h2>A practical toolkit for cleaner content and data.</h2>
-                <p>CleanrKit brings everyday formatting tools into one fast, approachable suite. Use it to prepare
-                    text for publishing, validate structured data, tidy exports, clean up code, and turn inconsistent
-                    input into output that is easier to read and reuse.</p>
-                <p class="creator-line">Created by <a href="https://cesardelgado.dev" target="_blank"
-                        rel="noopener noreferrer">Cesar Delgado</a>.</p>
+                <p class="section-kicker">Less cleanup. More momentum.</p>
+                <h2>Turn messy input into useful output.</h2>
+                <p>CleanrKit brings the everyday formatting tools you need into one approachable, privacy-conscious suite.</p>
             </div>
+            <a class="landing-button" href="{{ url_for('text_scrubber') }}">Start with TextCleanr <span aria-hidden="true">→</span></a>
         </section>
 
-        <footer class="app-footer">
-            <p>Copyright © 2026 <a href="https://cesardelgado.dev/" target="_blank" rel="noopener noreferrer">Cesar
-                    Delgado</a></p>
+        <footer class="landing-footer">
+            <a class="suite-logo landing-logo" href="{{ url_for('home') }}">{% include "_cleanrkit_brand.html" %}</a>
+            <p>Fast, private tools for cleaner content and data.</p>
+            <p>© 2026 <a href="https://cesardelgado.dev/" target="_blank" rel="noopener noreferrer">Cesar Delgado</a></p>
         </footer>
     </main>
+    {% include "_lucide_icons.html" %}
     <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
 </body>
 
 </html>

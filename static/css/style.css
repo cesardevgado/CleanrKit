@@ -7,9 +7,9 @@
   --muted: #475467;
   --border: #d9e0ea;
   --line: #e9edf5;
-  --primary: #1f6feb;
-  --primary-dark: #1256d6;
-  --poster-red: #dc301c;
+  --primary: #1268ee;
+  --primary-dark: #0757d7;
+  --brand-accent: #1268ee;
   --shadow: 0 18px 50px rgba(16, 24, 40, 0.08);
   --focus: 0 0 0 3px rgba(31, 111, 235, 0.18);
 }
@@ -25,7 +25,7 @@
   --line: #2a3445;
   --primary: #5b8cff;
   --primary-dark: #2068d5;
-  --poster-red: #d86052;
+  --brand-accent: #5b8cff;
   --shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
   --focus: 0 0 0 3px rgba(91, 140, 255, 0.24);
 }
@@ -130,7 +130,7 @@ button {
   width: 30px;
   height: 25px;
   flex: 0 0 auto;
-  fill: var(--poster-red, #dc301c);
+  fill: var(--brand-accent, #1268ee);
 }
 
 .suite-nav {
@@ -155,7 +155,7 @@ button {
   min-height: 54px;
   padding: 0 28px;
   border-radius: 999px;
-  background: var(--poster-red);
+  background: var(--brand-accent);
   box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.12);
   white-space: nowrap;
 }
@@ -165,7 +165,7 @@ button {
 }
 
 .suite-start-button:hover {
-  background: #c43232;
+  background: var(--primary-dark);
 }
 
 .suite-header-actions {
@@ -270,11 +270,11 @@ button {
 }
 
 :root.dark .pricing-card.is-featured {
-  border-color: var(--poster-red);
+  border-color: var(--brand-accent);
 }
 
 :root.dark .coming-badge {
-  background: color-mix(in srgb, var(--poster-red) 18%, transparent);
+  background: color-mix(in srgb, var(--brand-accent) 18%, transparent);
 }
 
 :root.dark .pricing-action.is-disabled {
@@ -353,7 +353,7 @@ button {
 }
 
 .hero-copy h1 strong {
-  color: var(--poster-red);
+  color: var(--brand-accent);
   font-size: 1.08em;
 }
 
@@ -373,12 +373,12 @@ button {
   width: 56px;
   height: 3px;
   margin: 0 14px 8px;
-  background: var(--poster-red);
+  background: var(--brand-accent);
 }
 
 .hero-pretitle {
   margin: 14px 0 0;
-  color: var(--poster-red);
+  color: var(--brand-accent);
   font-size: clamp(2.5rem, 2vw, 3rem);
   font-weight: 950;
   letter-spacing: 0.08em;
@@ -440,7 +440,7 @@ button {
   height: 58px;
   background: linear-gradient(
       90deg,
-      var(--poster-red) 0 50%,
+      var(--brand-accent) 0 50%,
       transparent 50% 100%
     )
     0 0 / 68px 58px repeat-x;
@@ -509,8 +509,8 @@ button {
 
 a.scrubbr-card:hover,
 a.scrubbr-card:focus-visible {
-  background: color-mix(in srgb, var(--poster-red) 8%, transparent);
-  outline: 2px solid var(--poster-red);
+  background: color-mix(in srgb, var(--brand-accent) 8%, transparent);
+  outline: 2px solid var(--brand-accent);
   outline-offset: 2px;
 }
 
@@ -550,7 +550,7 @@ a.scrubbr-card:focus-visible {
 .suite-section-copy h3,
 .suite-eyebrow {
   margin: 4px 0 0;
-  color: var(--poster-red);
+  color: var(--brand-accent);
   font-size: clamp(0.96rem, 1.25vw, 1.15rem) !important;
   font-weight: 1000;
   letter-spacing: 0.035em;
@@ -662,7 +662,7 @@ a.scrubbr-card:focus-visible {
 .suite-eyebrow,
 .pricing-label {
   margin: 0;
-  color: var(--poster-red);
+  color: var(--brand-accent);
   font-size: 0.82rem;
   font-weight: 950;
   letter-spacing: 0.14em;
@@ -705,7 +705,7 @@ a.scrubbr-card:focus-visible {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--poster-red);
+  background: var(--brand-accent);
   color: #fff;
   font-weight: 1000;
 }
@@ -744,7 +744,7 @@ a.scrubbr-card:focus-visible {
 }
 
 .pricing-card.is-featured {
-  border-color: var(--poster-red);
+  border-color: var(--brand-accent);
 }
 
 .pricing-card h3 {
@@ -780,7 +780,7 @@ a.scrubbr-card:focus-visible {
 .pricing-card li::before {
   content: "✓";
   margin-right: 10px;
-  color: var(--poster-red);
+  color: var(--brand-accent);
   font-weight: 1000;
 }
 
@@ -801,7 +801,7 @@ a.scrubbr-card:focus-visible {
   place-items: center;
   margin-top: auto;
   border-radius: 999px;
-  background: var(--poster-red);
+  background: var(--brand-accent);
   color: #fff;
   font-weight: 900;
   text-decoration: none;
@@ -860,7 +860,7 @@ a.scrubbr-card:focus-visible {
 
 .creator-line a {
   color: #fff;
-  text-decoration-color: var(--poster-red);
+  text-decoration-color: var(--brand-accent);
   text-decoration-thickness: 3px;
   text-underline-offset: 4px;
 }
@@ -929,6 +929,57 @@ a.scrubbr-card:focus-visible {
   object-fit: contain;
 }
 
+.brand-tool-icon {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 30px;
+  border-radius: 8px;
+  color: #ffffff;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 5px 12px rgba(16, 24, 40, 0.12);
+}
+
+.brand-tool-icon i {
+  color: inherit;
+  font-size: 0.67rem;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.brand-tool-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  color: #ffffff;
+}
+
+.brand-tool-blue {
+  background: linear-gradient(145deg, #4d99ff, #1468ee);
+}
+
+.brand-tool-green {
+  background: linear-gradient(145deg, #53d698, #25ae70);
+}
+
+.brand-tool-orange {
+  background: linear-gradient(145deg, #ff9e4a, #e86d1f);
+}
+
+.brand-tool-purple {
+  background: linear-gradient(145deg, #9a6df2, #7141da);
+}
+
+.brand-tool-cyan {
+  background: linear-gradient(145deg, #25c9c8, #08a3ad);
+}
+
+.brand-tool-pink {
+  background: linear-gradient(145deg, #ef6fb1, #dc3e90);
+}
+
 .brand h1 {
   min-width: 0;
   margin: 0;
@@ -937,7 +988,6 @@ a.scrubbr-card:focus-visible {
   font-weight: 800;
   letter-spacing: 0;
   color: var(--poster-navy);
-  text-transform: uppercase;
 }
 
 .top-actions {
@@ -977,20 +1027,28 @@ a.scrubbr-card:focus-visible {
 }
 
 .tool-nav-link:hover,
-.tool-nav-link.active {
-  background: var(--panel);
-  color: var(--text);
+.tool-nav-link:focus-visible {
+  color: var(--primary);
+  outline: none;
 }
 
-.tool-nav-home {
-  background: var(--poster-red);
+.tool-nav-link.active,
+.tool-nav-link.active:hover,
+.tool-nav-link.active:focus-visible {
+  background: var(--primary);
   color: #ffffff;
+  box-shadow: 0 5px 12px rgba(18, 104, 238, 0.2);
 }
 
-.tool-nav-home:hover,
-.tool-nav-home:focus-visible {
-  background: var(--poster-red);
-  color: #ffffff;
+.tool-nav-link:focus-visible {
+  box-shadow: inset 0 0 0 2px
+    color-mix(in srgb, var(--primary) 45%, transparent);
+}
+
+.tool-nav-link.active:focus-visible {
+  box-shadow:
+    0 5px 12px rgba(18, 104, 238, 0.2),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.7);
 }
 
 .icon-button,
@@ -1731,6 +1789,10 @@ input:focus-visible {
 .run-button svg {
   width: 26px;
   height: 26px;
+  color: var(--primary);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .run-button:disabled {

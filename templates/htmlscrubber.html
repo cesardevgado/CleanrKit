@@ -17,8 +17,7 @@
                 <a class="brand-suite-logo" href="{{ url_for('home') }}" aria-label="CleanrKit home">
                     {% include "_cleanrkit_brand.html" %}
                 </a>
-                <img class="brand-icon" src="{{ url_for('template_image', filename='htmlcleanr.svg') }}" alt=""
-                    aria-hidden="true">
+                <span class="brand-tool-icon brand-tool-orange" aria-hidden="true"><i data-lucide="code-xml">&lt;/&gt;</i></span>
                 <h1>HTMLCleanr</h1>
             </div>
             {% include "_mobile_menu_toggle.html" %}
@@ -251,6 +250,7 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+    {% include "_lucide_icons.html" %}
     <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
     <script src="{{ url_for('static', filename='js/htmlscrubber.js') }}"></script>
 </body>
