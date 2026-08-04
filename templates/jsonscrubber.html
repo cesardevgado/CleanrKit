@@ -4,21 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSONCleanr</title>
+    {% if task_page is defined and task_page %}
+    {% set seo_title = task_page["seo_title"] %}
+    {% set seo_description = task_page["seo_description"] %}
+    {% else %}
+    {% set seo_title = "JSONCleanr: Free JSON Formatter & Validator | CleanrKit" %}
+    {% set seo_description = "Format, validate, sort, and clean JSON online with instant error feedback and useful
+    statistics. JSONCleanr runs privately in your browser." %}
+    {% set seo_endpoint = "json_scrubber" %}
+    {% endif %}
+    {% include "_seo.html" %}
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8599123009684060"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
-    <main class="app" data-json-url="{{ url_for('format_json') }}" aria-label="JSONCleanr JSON formatting tool">
+    <main class="app tool-page" data-json-url="{{ url_for('format_json') }}"
+        {% if task_page is defined and task_page %}data-task-action="{{ task_page["action"] }}"
+        data-default-actions="{{ task_page["actions"] | join(',') }}"{% endif %}
+        aria-label="JSONCleanr JSON formatting tool">
         <header class="topbar">
             <div class="brand">
                 <a class="brand-suite-logo" href="{{ url_for('home') }}" aria-label="CleanrKit home">
                     {% include "_cleanrkit_brand.html" %}
                 </a>
                 <span class="brand-tool-icon brand-tool-green" aria-hidden="true"><i data-lucide="braces">{ }</i></span>
-                <h1>JSONCleanr</h1>
+                <h1>{{ task_page["title"] if task_page is defined and task_page else "JSONCleanr" }}</h1>
             </div>
             {% include "_mobile_menu_toggle.html" %}
 
@@ -43,10 +55,86 @@
             </div>
         </header>
 
+        {% if task_page is defined and task_page %}
+        {% set tool_name = task_page["title"] %}
+        {% set tool_intro_title = task_page["intro_title"] %}
+        {% set tool_intro_copy = task_page["intro_copy"] %}
+        {% set tool_examples = task_page["examples"] %}
+        {% set tool_features = task_page["features"] %}
+        {% set tool_steps = task_page["steps"] %}
+        {% set tool_faqs = task_page["faqs"] %}
+        {% set full_tool_cta = true %}
+        {% set full_tool_endpoint = "json_scrubber" %}
+        {% set full_tool_label = "Explore every JSONCleanr feature" %}
+        {% set related_tools = [
+        {"name": "JSONCleanr", "endpoint": "json_scrubber", "icon": "braces", "fallback": "{ }", "color":
+        "brand-tool-green", "copy": "Use every JSON formatting and cleanup option."},
+        {"name": "SQLCleanr", "endpoint": "sql_scrubber", "icon": "database", "fallback": "DB", "color":
+        "brand-tool-purple", "copy": "Format and validate readable SQL queries."},
+        {"name": "TextCleanr", "endpoint": "text_scrubber", "icon": "type", "fallback": "T", "color":
+        "brand-tool-blue", "copy": "Remove unwanted formatting from plain text."}
+        ] %}
+        {% else %}
+        {% set tool_name = "JSONCleanr" %}
+        {% set tool_intro_title = "Format and validate JSON online" %}
+        {% set tool_intro_copy = "Beautify, minify, sort, and validate JSON with clear error feedback and useful
+        document statistics. JSONCleanr helps developers turn hard-to-read data into consistent, production-ready
+        output." %}
+        {% set tool_examples = [
+        {"title": "Beautify compact JSON", "before": "{\"name\":\"Ada\",\"active\":true}", "after": "{ ↵ \"name\":
+        \"Ada\", ↵ \"active\": true ↵}", "copy": "Expand minified JSON into an indented structure that is easier to
+        inspect and debug."},
+        {"title": "Validate API responses", "before": "{\"status\": \"ok\",}", "after": "Error: trailing comma", "copy":
+        "Find malformed JSON with clear line and column details for faster troubleshooting."},
+        {"title": "Standardize object keys", "before": "{\"z\": 1, \"a\": 2, \"z\": 3}",
+        "after": "{\"a\": 2, \"z\":3}",
+        "copy": "Sort keys and remove duplicate properties to create predictable JSON output."}
+        ] %}
+        {% set tool_features = [
+        {"title": "Format or minify", "copy": "Switch between readable indentation and compact JSON output."},
+        {"title": "Syntax validation", "copy": "Catch malformed JSON with actionable line and column information."},
+        {"title": "JSON statistics", "copy": "Review keys, values, nesting depth, data types, and duplicate-key
+        counts."}
+        ] %}
+        {% set tool_steps = [
+        {"title": "Paste JSON data", "copy": "Add an object, array, or API response to the Input field."},
+        {"title": "Select formatting rules", "copy": "Choose pretty printing, minification, key sorting, or duplicate
+        removal."},
+        {"title": "Format and review", "copy": "Run JSONCleanr, resolve any validation errors, and export the result."}
+        ] %}
+        {% set tool_faqs = [
+        {"question": "How does JSONCleanr report invalid JSON?", "answer": "It identifies syntax errors and shows the
+        relevant line and column whenever that information is available."},
+        {"question": "Can JSONCleanr minify JSON?", "answer": "Yes. Choose the minify option to remove unnecessary
+        whitespace and create compact output."},
+        {"question": "Can I sort JSON keys?", "answer": "Yes. JSONCleanr can sort object keys while preserving arrays
+        and values."}
+        ] %}
+        {% set related_tools = [
+        {"name": "SQLCleanr", "endpoint": "sql_scrubber", "icon": "database", "fallback": "DB", "color":
+        "brand-tool-purple", "copy": "Format and validate readable SQL queries."},
+        {"name": "CSVCleanr", "endpoint": "csv_scrubber", "icon": "table-properties", "fallback": "CSV", "color":
+        "brand-tool-cyan", "copy": "Clean tabular data, headers, and duplicate rows."},
+        {"name": "TextCleanr", "endpoint": "text_scrubber", "icon": "type", "fallback": "T", "color": "brand-tool-blue",
+        "copy": "Remove unwanted formatting from plain text."}
+        ] %}
+        {% endif %}
+        {% include "_tool_seo_intro.html" %}
+
         <div class="shell">
             <aside class="sidebar" aria-label="JSON options">
                 <h2>Clean &amp; Format</h2>
                 {% include "_sidebar_toggle.html" %}
+
+                {% if task_page is defined and task_page %}
+                <div class="task-primary-option" aria-label="Selected JSON action"></div>
+                <p class="task-full-tool-link">Need more JSON tools? Visit the
+                    <a href="{{ url_for('json_scrubber') }}">JSONCleanr Free Online Tool</a>.
+                </p>
+                <details class="task-advanced-options">
+                    <summary>Advanced Options</summary>
+                    <div class="task-advanced-content">
+                {% endif %}
 
                 <div class="option-list format-mode" aria-label="Format mode">
                     <h3 class="option-group-title">Format Mode</h3>
@@ -60,6 +148,15 @@
                         <label class="option">
                             <input type="radio" name="jsonFormatMode" data-action="minifyJson">
                             <span>Minify JSON</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="option-list">
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="validateJson" checked>
+                            <span>Validate JSON</span>
                         </label>
                     </div>
                 </div>
@@ -82,6 +179,12 @@
                     </div>
                     <div class="option-row">
                         <label class="option">
+                            <input type="checkbox" data-action="removeEmptyValues">
+                            <span>Remove null and empty values</span>
+                        </label>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
                             <input type="checkbox" data-action="removeDuplicateKeys" checked>
                             <span>Remove duplicate keys</span>
                         </label>
@@ -89,14 +192,25 @@
                     <div class="option-row">
                         <label class="option">
                             <input type="checkbox" data-action="convertEscapedJson">
-                            <span>Convert escaped JSON</span>
+                            <span>Unescape JSON strings</span>
+                        </label>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="escapeJson">
+                            <span>Escape JSON strings</span>
                         </label>
                     </div>
                 </div>
 
-                <div class="json-status" id="jsonStatus" role="status" aria-live="polite">
+                {% if task_page is defined and task_page %}
+                    </div>
+                </details>
+                {% endif %}
+
+                <div class="json-status{% if initial_valid is defined and not initial_valid %} is-invalid{% endif %}" id="jsonStatus" role="status" aria-live="polite">
                     <span class="status-dot"></span>
-                    <span id="jsonStatusText">Valid JSON</span>
+                    <span id="jsonStatusText">{{ validation_message if validation_message is defined else "Valid JSON" }}</span>
                 </div>
 
                 <dl class="json-stats" aria-label="JSON statistics">
@@ -110,7 +224,7 @@
                     </div>
                     <div>
                         <dt>Keys</dt>
-                        <dd id="jsonKeys">{{ json_statistics.keys }}</dd>
+                        <dd id="jsonKeys">{{ json_statistics["keys"] }}</dd>
                     </div>
                     <div>
                         <dt>Values</dt>
@@ -221,6 +335,8 @@
                 </div>
             </section>
         </div>
+
+        {% include "_tool_seo_details.html" %}
 
         <footer class="app-footer">
             <p>Copyright © 2026 <a href="https://cesardelgado.dev" target="_blank" rel="noopener noreferrer">Cesar

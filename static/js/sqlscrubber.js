@@ -1,4 +1,5 @@
-const sqlUrl = document.querySelector(".app").dataset.sqlUrl;
+const app = document.querySelector(".app");
+const sqlUrl = app.dataset.sqlUrl;
 const inputSql = document.querySelector("#inputSql");
 const outputSql = document.querySelector("#outputSql");
 const formatButton = document.querySelector("#formatNow");
@@ -16,7 +17,14 @@ const outputLineCount = document.querySelector("#outputLineCount");
 const inputLineNumbers = document.querySelector("#inputLineNumbers");
 const outputLineNumbers = document.querySelector("#outputLineNumbers");
 const initialSql = inputSql.value;
-const defaultActions = new Set(["formatSql", "normalizeWhitespace"]);
+const configuredDefaultActions = (app.dataset.defaultActions || "")
+  .split(",")
+  .filter(Boolean);
+const defaultActions = new Set(
+  configuredDefaultActions.length
+    ? configuredDefaultActions
+    : ["formatSql", "validateSql", "normalizeWhitespace"],
+);
 const minimumProcessingMs = 350;
 let toastTimer;
 let refreshTimer;
@@ -46,10 +54,40 @@ function applyDefaultActions() {
   controls.forEach((control) => {
     control.checked = defaultActions.has(control.dataset.action);
   });
-  document.querySelector('[name="keywordCase"][value="upper"]').checked = true;
-  document.querySelector('[name="indentSize"][value="4"]').checked = true;
-  document.querySelector('[name="formatMode"][value="expanded"]').checked =
-    true;
+  const keywordCase = app.dataset.keywordCase || "upper";
+  const indentSize = app.dataset.indentSize || "4";
+  const formatMode = app.dataset.formatMode || "expanded";
+  document.querySelector(
+    `[name="keywordCase"][value="${keywordCase}"]`,
+  ).checked = true;
+  document.querySelector(
+    `[name="indentSize"][value="${indentSize}"]`,
+  ).checked = true;
+  document.querySelector(
+    `[name="formatMode"][value="${formatMode}"]`,
+  ).checked = true;
+}
+
+function setupTaskOptions() {
+  const taskAction = app.dataset.taskAction;
+  const primaryOption = document.querySelector(".task-primary-option");
+
+  if (!taskAction || !primaryOption) {
+    return;
+  }
+
+  const taskControl = controls.find(
+    (control) => control.dataset.action === taskAction,
+  );
+  const taskRow = taskControl?.closest(".option-row");
+
+  if (taskRow) {
+    const label = taskRow.querySelector(".option > span");
+    if (label && app.dataset.taskLabel) {
+      label.textContent = app.dataset.taskLabel;
+    }
+    primaryOption.append(taskRow);
+  }
 }
 
 function syncSubOptions() {
@@ -255,6 +293,7 @@ document.querySelector("#downloadOutput").addEventListener("click", () => {
 });
 
 inputSql.value = initialSql;
+setupTaskOptions();
 applyDefaultActions();
 syncSubOptions();
 refresh();

@@ -4,21 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SQLCleanr</title>
+    {% if task_page is defined and task_page %}
+    {% set seo_title = task_page["seo_title"] %}
+    {% set seo_description = task_page["seo_description"] %}
+    {% else %}
+    {% set seo_title = "SQLCleanr: Free Online SQL Formatter & Beautifier | CleanrKit" %}
+    {% set seo_description = "Format and beautify SQL queries online with configurable keyword case, indentation, validation, and compact or expanded formatting modes." %}
+    {% set seo_endpoint = "sql_scrubber" %}
+    {% endif %}
+    {% include "_seo.html" %}
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8599123009684060"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
-    <main class="app" data-sql-url="{{ url_for('format_sql') }}" aria-label="SQLCleanr SQL formatting tool">
+    <main class="app tool-page" data-sql-url="{{ url_for('format_sql') }}"
+        {% if task_page is defined and task_page %}data-task-action="{{ task_page["action"] }}"
+        data-task-label="{{ task_page["title"] }}" data-default-actions="{{ task_page["actions"] | join(',') }}"
+        data-keyword-case="{{ task_page["keyword_case"] }}" data-indent-size="{{ task_page["indent_size"] }}"
+        data-format-mode="{{ task_page["format_mode"] }}"{% endif %} aria-label="SQLCleanr SQL formatting tool">
         <header class="topbar">
             <div class="brand">
                 <a class="brand-suite-logo" href="{{ url_for('home') }}" aria-label="CleanrKit home">
                     {% include "_cleanrkit_brand.html" %}
                 </a>
                 <span class="brand-tool-icon brand-tool-purple" aria-hidden="true"><i data-lucide="database">DB</i></span>
-                <h1>SQLCleanr</h1>
+                <h1>{{ task_page["title"] if task_page is defined and task_page else "SQLCleanr" }}</h1>
             </div>
             {% include "_mobile_menu_toggle.html" %}
 
@@ -43,10 +55,68 @@
             </div>
         </header>
 
+        {% if task_page is defined and task_page %}
+        {% set tool_name = task_page["title"] %}
+        {% set tool_intro_title = task_page["intro_title"] %}
+        {% set tool_intro_copy = task_page["intro_copy"] %}
+        {% set tool_examples = task_page["examples"] %}
+        {% set tool_features = task_page["features"] %}
+        {% set tool_steps = task_page["steps"] %}
+        {% set tool_faqs = task_page["faqs"] %}
+        {% set full_tool_cta = true %}
+        {% set full_tool_endpoint = "sql_scrubber" %}
+        {% set full_tool_label = "Explore every SQLCleanr feature" %}
+        {% set related_tools = [
+            {"name": "SQLCleanr", "endpoint": "sql_scrubber", "icon": "database", "fallback": "DB", "color": "brand-tool-purple", "copy": "Use every SQL formatting and cleanup option."},
+            {"name": "JSONCleanr", "endpoint": "json_scrubber", "icon": "braces", "fallback": "{ }", "color": "brand-tool-green", "copy": "Format data returned by APIs and databases."},
+            {"name": "CSVCleanr", "endpoint": "csv_scrubber", "icon": "table-properties", "fallback": "CSV", "color": "brand-tool-cyan", "copy": "Prepare tabular data for database imports."}
+        ] %}
+        {% else %}
+        {% set tool_name = "SQLCleanr" %}
+        {% set tool_intro_title = "Format and beautify SQL queries online" %}
+        {% set tool_intro_copy = "Transform dense SQL into readable queries with configurable indentation, keyword case, and compact or expanded layouts. SQLCleanr also validates common syntax issues so problems are easier to spot before execution." %}
+        {% set tool_examples = [
+            {"title": "Beautify complex queries", "before": "SELECT * FROM users WHERE active=1", "after": "SELECT * ↵FROM users ↵WHERE active = 1", "copy": "Indent joins, clauses, subqueries, and conditions to make SQL easier to understand."},
+            {"title": "Standardize keyword case", "before": "select name from users", "after": "SELECT name FROM users", "copy": "Convert SQL keywords to upper or lower case for a consistent team style."},
+            {"title": "Compact SQL for sharing", "before": "SELECT * ↵FROM users ↵WHERE id = 7", "after": "SELECT * FROM users WHERE id = 7", "copy": "Reduce unnecessary whitespace when embedding or transferring a finished query."}
+        ] %}
+        {% set tool_features = [
+            {"title": "Multiple layout modes", "copy": "Choose expanded formatting for readability or compact formatting for shorter output."},
+            {"title": "Style controls", "copy": "Configure keyword case and indentation size to match your SQL conventions."},
+            {"title": "Query validation", "copy": "Surface common syntax and structural issues without connecting to a database."}
+        ] %}
+        {% set tool_steps = [
+            {"title": "Paste a SQL query", "copy": "Add a statement or multi-query script to the Input field."},
+            {"title": "Choose a SQL style", "copy": "Set the layout, indentation, keyword case, and cleanup options."},
+            {"title": "Format and inspect", "copy": "Run SQLCleanr, review validation feedback, and export the formatted query."}
+        ] %}
+        {% set tool_faqs = [
+            {"question": "Can SQLCleanr change keyword case?", "answer": "Yes. You can format recognized SQL keywords in upper or lower case."},
+            {"question": "Does SQLCleanr validate queries?", "answer": "It checks for common structural and syntax problems, but it does not connect to a database or execute SQL."},
+            {"question": "Can I choose the indentation size?", "answer": "Yes. Adjust the indentation and layout options to match your preferred SQL style."}
+        ] %}
+        {% set related_tools = [
+            {"name": "JSONCleanr", "endpoint": "json_scrubber", "icon": "braces", "fallback": "{ }", "color": "brand-tool-green", "copy": "Format data returned by APIs and databases."},
+            {"name": "CSVCleanr", "endpoint": "csv_scrubber", "icon": "table-properties", "fallback": "CSV", "color": "brand-tool-cyan", "copy": "Prepare tabular data for database imports."},
+            {"name": "TextCleanr", "endpoint": "text_scrubber", "icon": "type", "fallback": "T", "color": "brand-tool-blue", "copy": "Clean copied queries and surrounding text."}
+        ] %}
+        {% endif %}
+        {% include "_tool_seo_intro.html" %}
+
         <div class="shell">
             <aside class="sidebar" aria-label="SQL options">
                 <h2>Clean &amp; Format</h2>
                 {% include "_sidebar_toggle.html" %}
+
+                {% if task_page is defined and task_page %}
+                <div class="task-primary-option" aria-label="Selected SQL action"></div>
+                <p class="task-full-tool-link">Need more SQL tools? Visit the
+                    <a href="{{ url_for('sql_scrubber') }}">SQLCleanr Free Online Tool</a>.
+                </p>
+                <details class="task-advanced-options">
+                    <summary>Advanced Options</summary>
+                    <div class="task-advanced-content">
+                {% endif %}
 
                 <div class="option-list">
                     <div class="option-row">
@@ -89,6 +159,12 @@
                 <div class="option-list">
                     <div class="option-row">
                         <label class="option">
+                            <input type="checkbox" data-action="validateSql" checked>
+                            <span>Validate SQL</span>
+                        </label>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
                             <input type="checkbox" data-action="removeComments">
                             <span>Remove comments</span>
                         </label>
@@ -107,7 +183,12 @@
                     </div>
                 </div>
 
-                <div class="json-status" id="sqlStatus" role="status" aria-live="polite">
+                {% if task_page is defined and task_page %}
+                    </div>
+                </details>
+                {% endif %}
+
+                <div class="json-status{% if valid is defined and not valid %} is-invalid{% endif %}" id="sqlStatus" role="status" aria-live="polite">
                     <span class="status-dot"></span>
                     <span id="sqlStatusText">{{ validation_message }}</span>
                 </div>
@@ -222,6 +303,8 @@
 
             </section>
         </div>
+
+        {% include "_tool_seo_details.html" %}
 
         <footer class="app-footer">
             <p>Copyright © 2026 <a href="https://cesardelgado.dev" target="_blank" rel="noopener noreferrer">Cesar

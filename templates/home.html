@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Clean, format, and validate text, JSON, CSV, HTML, Markdown, and SQL in your browser with CleanrKit.">
-    <title>CleanrKit — Clean data. Better results.</title>
+    {% set seo_title = "CleanrKit: Free Browser Tools for Cleaner Text & Data" %}
+    {% set seo_description = "Clean, format, and validate text, JSON, CSV, HTML, Markdown, and SQL with fast, privacy-first tools that run in your browser." %}
+    {% set seo_endpoint = "home" %}
+    {% include "_seo.html" %}
     <script>
         if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
             document.documentElement.classList.add("dark");

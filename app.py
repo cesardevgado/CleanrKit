@@ -1,13 +1,27 @@
 import csv
 import json
+import xml.etree.ElementTree as ET
 
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import (
+    Flask,
+    Response,
+    abort,
+    jsonify,
+    render_template,
+    request,
+    send_from_directory,
+    url_for,
+)
 from services.csv_scrubber import SAMPLE_CSV, scrub_csv
 from services.html_scrubber import SAMPLE_HTML, scrub_html
 from services.json_scrubber import SAMPLE_JSON, scrub_json
 from services.markdown_scrubber import SAMPLE_MARKDOWN, scrub_markdown
 from services.sql_scrubber import SAMPLE_SQL, scrub_sql
 from services.formatter import apply_formatting, get_text_statistics
+from csv_tasks import CSV_TASKS, build_csv_task
+from json_tasks import JSON_TASKS, build_json_task
+from sql_tasks import SQL_TASKS, build_sql_task
+from text_tasks import TEXT_TASKS, build_text_task
 
 app = Flask(__name__)
 
@@ -51,6 +65,52 @@ def home():
     return render_template("home.html")
 
 
+@app.route("/sitemap.xml")
+def sitemap():
+    namespace = "http://www.sitemaps.org/schemas/sitemap/0.9"
+    ET.register_namespace("", namespace)
+    urlset = ET.Element(ET.QName(namespace, "urlset"))
+
+    public_rules = sorted(
+        (
+            rule
+            for rule in app.url_map.iter_rules()
+            if "GET" in rule.methods
+            and not rule.arguments
+            and rule.endpoint not in {"sitemap", "static"}
+        ),
+        key=lambda rule: rule.rule,
+    )
+
+    for rule in public_rules:
+        url = ET.SubElement(urlset, ET.QName(namespace, "url"))
+        location = ET.SubElement(url, ET.QName(namespace, "loc"))
+        location.text = url_for(rule.endpoint, _external=True)
+
+    for task_slug in sorted(TEXT_TASKS):
+        url = ET.SubElement(urlset, ET.QName(namespace, "url"))
+        location = ET.SubElement(url, ET.QName(namespace, "loc"))
+        location.text = url_for("text_task", task_slug=task_slug, _external=True)
+
+    for task_slug in sorted(JSON_TASKS):
+        url = ET.SubElement(urlset, ET.QName(namespace, "url"))
+        location = ET.SubElement(url, ET.QName(namespace, "loc"))
+        location.text = url_for("text_task", task_slug=task_slug, _external=True)
+
+    for task_slug in sorted(SQL_TASKS):
+        url = ET.SubElement(urlset, ET.QName(namespace, "url"))
+        location = ET.SubElement(url, ET.QName(namespace, "loc"))
+        location.text = url_for("text_task", task_slug=task_slug, _external=True)
+
+    for task_slug in sorted(CSV_TASKS):
+        url = ET.SubElement(urlset, ET.QName(namespace, "url"))
+        location = ET.SubElement(url, ET.QName(namespace, "loc"))
+        location.text = url_for("text_task", task_slug=task_slug, _external=True)
+
+    document = ET.tostring(urlset, encoding="utf-8", xml_declaration=True)
+    return Response(document, mimetype="application/xml")
+
+
 @app.route("/template-img/<path:filename>")
 def template_image(filename):
     return send_from_directory("templates/img", filename)
@@ -68,6 +128,106 @@ def text_scrubber():
         output_statistics=get_text_statistics(output),
         reduction_statistics=get_reduction_statistics(SAMPLE_TEXT, output),
     )
+
+
+@app.route("/<task_slug>")
+def text_task(task_slug):
+    if task_slug in TEXT_TASKS:
+        task_page = build_text_task(task_slug)
+        sample_text = task_page["sample"]
+        output = apply_formatting(sample_text, task_page["actions"])
+
+        return render_template(
+            "index.html",
+            task_page=task_page,
+            seo_canonical_url=url_for("text_task", task_slug=task_slug, _external=True),
+            sample_text=sample_text,
+            initial_output=output,
+            input_statistics=get_text_statistics(sample_text),
+            output_statistics=get_text_statistics(output),
+            reduction_statistics=get_reduction_statistics(sample_text, output),
+        )
+
+    if task_slug in JSON_TASKS:
+        task_page = build_json_task(task_slug)
+        sample_json = task_page["sample"]
+
+        try:
+            result = scrub_json(sample_json, task_page["actions"])
+            initial_output = result["output"]
+            json_statistics = result["statistics"]
+            initial_valid = True
+            validation_message = "Valid JSON"
+        except json.JSONDecodeError as error:
+            initial_output = (
+                f"Invalid JSON at line {error.lineno}, column {error.colno}: {error.msg}"
+            )
+            json_statistics = {}
+            initial_valid = False
+            validation_message = initial_output
+
+        return render_template(
+            "jsonscrubber.html",
+            task_page=task_page,
+            seo_canonical_url=url_for("text_task", task_slug=task_slug, _external=True),
+            sample_json=sample_json,
+            initial_output=initial_output,
+            json_statistics=json_statistics,
+            initial_valid=initial_valid,
+            validation_message=validation_message,
+        )
+
+    if task_slug in SQL_TASKS:
+        task_page = build_sql_task(task_slug)
+        result = scrub_sql(
+            task_page["sample"],
+            task_page["actions"],
+            keyword_case=task_page["keyword_case"],
+            indent_size=task_page["indent_size"],
+            format_mode=task_page["format_mode"],
+        )
+
+        return render_template(
+            "sqlscrubber.html",
+            task_page=task_page,
+            seo_canonical_url=url_for("text_task", task_slug=task_slug, _external=True),
+            sample_sql=task_page["sample"],
+            initial_output=result["output"],
+            sql_statistics=result["statistics"],
+            validation_message=result["validation_message"],
+            valid=result["valid"],
+        )
+
+    if task_slug in CSV_TASKS:
+        task_page = build_csv_task(task_slug)
+
+        try:
+            result = scrub_csv(task_page["sample"], task_page["actions"])
+            initial_output = result["output"]
+            csv_statistics = result["statistics"]
+            csv_preview = result["preview"]
+            initial_valid = True
+            validation_message = "Ready"
+        except csv.Error as error:
+            initial_output = f"Invalid CSV: {error}"
+            csv_statistics = {}
+            csv_preview = []
+            initial_valid = False
+            validation_message = initial_output
+
+        return render_template(
+            "csvscrubber.html",
+            task_page=task_page,
+            seo_canonical_url=url_for("text_task", task_slug=task_slug, _external=True),
+            sample_csv=task_page["sample"],
+            initial_output=initial_output,
+            csv_statistics=csv_statistics,
+            csv_preview=csv_preview,
+            initial_valid=initial_valid,
+            validation_message=validation_message,
+        )
+
+    abort(404)
 
 
 @app.route("/json")

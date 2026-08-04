@@ -28,7 +28,7 @@
   min-height: 74px;
   grid-template-columns: 220px 1fr auto;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 20px;
   border-bottom: 1px solid var(--landing-line);
   background: transparent;
   color: var(--landing-ink);

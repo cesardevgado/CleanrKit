@@ -1,0 +1,86 @@
+<section class="tool-seo-details" aria-label="Learn how to use {{ tool_name }}">
+    <div class="tool-content-section tool-examples">
+        <p class="tool-seo-kicker">Common uses</p>
+        <h2>{{ tool_name }} examples</h2>
+        <div class="tool-example-grid">
+            {% for example in tool_examples %}
+            <article>
+                <h3>{{ example["title"] }}</h3>
+                <span class="tool-example-sample">
+                    <code>{{ example["before"] | replace("↵", "\n") | replace("⇥", "\t") | replace("·", " ") }}</code>
+                    <b aria-hidden="true">↓</b>
+                    <code>{{ example["after"] | replace("↵", "\n") | replace("⇥", "\t") | replace("·", " ") }}</code>
+                </span>
+                <p>{{ example["copy"] }}</p>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="tool-content-section tool-features">
+        <p class="tool-seo-kicker">What it can do</p>
+        <h2>{{ tool_name }} features</h2>
+        <div class="tool-feature-grid">
+            {% for feature in tool_features %}
+            <article>
+                <span aria-hidden="true">✓</span>
+                <div>
+                    <h3>{{ feature["title"] }}</h3>
+                    <p>{{ feature["copy"] }}</p>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% if full_tool_cta is defined and full_tool_cta %}
+        <a class="full-tool-cta" href="{{ url_for(full_tool_endpoint | default('text_scrubber')) }}">{{ full_tool_label | default('Explore every TextCleanr feature') }} →</a>
+        {% endif %}
+    </div>
+
+    <div class="tool-content-section tool-how-to">
+        <p class="tool-seo-kicker">Three simple steps</p>
+        <h2>How to use {{ tool_name }}</h2>
+        <ol class="tool-step-grid">
+            {% for step in tool_steps %}
+            <li>
+                <span>{{ loop.index }}</span>
+                <div>
+                    <h3>{{ step["title"] }}</h3>
+                    <p>{{ step["copy"] }}</p>
+                </div>
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+
+    <div class="tool-content-section tool-faqs">
+        <p class="tool-seo-kicker">Helpful answers</p>
+        <h2>{{ tool_name }} FAQs</h2>
+        <div class="tool-faq-list">
+            {% for faq in tool_faqs %}
+            <details>
+                <summary>{{ faq["question"] }}</summary>
+                <p>{{ faq["answer"] }}</p>
+            </details>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="tool-content-section related-tools">
+        <p class="tool-seo-kicker">Keep cleaning</p>
+        <h2>Related tools</h2>
+        <div class="related-tool-grid">
+            {% for related in related_tools %}
+            <a href="{{ url_for(related["endpoint"]) }}">
+                <span class="brand-tool-icon {{ related["color"] }}" aria-hidden="true">
+                    <i data-lucide="{{ related["icon"] }}">{{ related["fallback"] }}</i>
+                </span>
+                <div>
+                    <h3>{{ related["name"] }}</h3>
+                    <p>{{ related["copy"] }}</p>
+                    <strong>Open tool →</strong>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>

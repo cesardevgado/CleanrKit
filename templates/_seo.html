@@ -1,0 +1,10 @@
+<title>{{ seo_title }}</title>
+<meta name="description" content="{{ seo_description }}">
+{% set canonical_url = seo_canonical_url if seo_canonical_url is defined else url_for(seo_endpoint, _external=True) %}
+<link rel="canonical" href="{{ canonical_url }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CleanrKit">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="{{ seo_title }}">
+<meta property="og:description" content="{{ seo_description }}">
+<meta property="og:url" content="{{ canonical_url }}">

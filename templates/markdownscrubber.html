@@ -4,14 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MarkdownCleanr</title>
+    {% set seo_title = "MarkdownCleanr: Free Markdown Cleaner & Formatter | CleanrKit" %}
+    {% set seo_description = "Clean and normalize Markdown online for consistent headings, spacing, lists, and output with a fast tool that runs privately in your browser." %}
+    {% set seo_endpoint = "markdown_scrubber" %}
+    {% include "_seo.html" %}
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8599123009684060"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
-    <main class="app" data-markdown-url="{{ url_for('format_markdown') }}"
+    <main class="app tool-page" data-markdown-url="{{ url_for('format_markdown') }}"
         aria-label="MarkdownCleanr Markdown formatting tool">
         <header class="topbar">
             <div class="brand">
@@ -43,6 +46,36 @@
                 {% include "_theme_toggle.html" %}
             </div>
         </header>
+
+        {% set tool_name = "MarkdownCleanr" %}
+        {% set tool_intro_title = "Clean and format Markdown online" %}
+        {% set tool_intro_copy = "Normalize Markdown headings, lists, emphasis, links, code blocks, and spacing for consistent documents. MarkdownCleanr makes pasted or generated Markdown easier to read, maintain, and publish." %}
+        {% set tool_examples = [
+            {"title": "Normalize document headings", "before": "###···Overview", "after": "### Overview", "copy": "Create a consistent heading hierarchy and spacing pattern throughout a Markdown file."},
+            {"title": "Clean generated Markdown", "before": "* one↵↵↵* two", "after": "- one↵- two", "copy": "Fix uneven lists, excessive blank lines, and inconsistent emphasis in generated content."},
+            {"title": "Prepare README files", "before": "# Project↵↵↵↵Install", "after": "# Project↵↵Install", "copy": "Standardize Markdown before publishing documentation or committing it to a repository."}
+        ] %}
+        {% set tool_features = [
+            {"title": "Markdown normalization", "copy": "Standardize headings, lists, emphasis, links, rules, code blocks, and spacing."},
+            {"title": "Document statistics", "copy": "Compare words, characters, lines, and heading counts as you clean."},
+            {"title": "Focused cleanup options", "copy": "Apply only the Markdown rules your document needs while preserving its content."}
+        ] %}
+        {% set tool_steps = [
+            {"title": "Paste Markdown", "copy": "Add generated, copied, or hand-written Markdown to the Input field."},
+            {"title": "Select cleanup rules", "copy": "Choose which structural and spacing patterns to normalize."},
+            {"title": "Clean and publish", "copy": "Run MarkdownCleanr, review the output, then copy or download the file."}
+        ] %}
+        {% set tool_faqs = [
+            {"question": "What Markdown can this tool normalize?", "answer": "It can clean headings, lists, emphasis, links, code blocks, horizontal rules, and document spacing."},
+            {"question": "Will code blocks be preserved?", "answer": "Yes. MarkdownCleanr is designed to retain fenced code content while normalizing the surrounding document."},
+            {"question": "Can I download the result?", "answer": "Yes. The cleaned Markdown can be copied or downloaded for use in your project."}
+        ] %}
+        {% set related_tools = [
+            {"name": "HTMLCleanr", "endpoint": "html_scrubber", "icon": "code-xml", "fallback": "</>", "color": "brand-tool-orange", "copy": "Beautify, minify, and clean HTML markup."},
+            {"name": "TextCleanr", "endpoint": "text_scrubber", "icon": "type", "fallback": "T", "color": "brand-tool-blue", "copy": "Normalize source text before converting it."},
+            {"name": "JSONCleanr", "endpoint": "json_scrubber", "icon": "braces", "fallback": "{ }", "color": "brand-tool-green", "copy": "Clean structured content and configuration files."}
+        ] %}
+        {% include "_tool_seo_intro.html" %}
 
         <div class="shell">
             <aside class="sidebar" aria-label="Markdown options">
@@ -255,6 +288,8 @@
 
             </section>
         </div>
+
+        {% include "_tool_seo_details.html" %}
 
         <footer class="app-footer">
             <p>Copyright © 2026 <a href="https://cesardelgado.dev" target="_blank" rel="noopener noreferrer">Cesar

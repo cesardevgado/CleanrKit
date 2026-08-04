@@ -4,14 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTMLCleanr</title>
+    {% set seo_title = "HTMLCleanr: Free HTML Formatter, Cleaner & Minifier | CleanrKit" %}
+    {% set seo_description = "Beautify, clean, or minify HTML online. Remove comments, scripts, styles, and unwanted markup using the fast, private HTMLCleanr browser tool." %}
+    {% set seo_endpoint = "html_scrubber" %}
+    {% include "_seo.html" %}
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8599123009684060"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
-    <main class="app" data-html-url="{{ url_for('format_html') }}" aria-label="HTMLCleanr HTML formatting tool">
+    <main class="app tool-page" data-html-url="{{ url_for('format_html') }}" aria-label="HTMLCleanr HTML formatting tool">
         <header class="topbar">
             <div class="brand">
                 <a class="brand-suite-logo" href="{{ url_for('home') }}" aria-label="CleanrKit home">
@@ -42,6 +45,36 @@
                 {% include "_theme_toggle.html" %}
             </div>
         </header>
+
+        {% set tool_name = "HTMLCleanr" %}
+        {% set tool_intro_title = "Format, clean, and minify HTML online" %}
+        {% set tool_intro_copy = "Beautify unreadable markup, create compact HTML, or remove comments, scripts, styles, and unwanted attributes. HTMLCleanr gives developers flexible cleanup controls with immediate formatted output." %}
+        {% set tool_examples = [
+            {"title": "Beautify minified markup", "before": "<main><h1>Hello</h1></main>", "after": "<main> ↵  <h1>Hello</h1> ↵</main>", "copy": "Turn compressed HTML into properly indented code that is easier to review and edit."},
+            {"title": "Prepare HTML for production", "before": "<!-- note --> <p>Hi</p>", "after": "<p>Hi</p>", "copy": "Minify markup and remove comments to reduce unnecessary document size."},
+            {"title": "Clean pasted HTML", "before": "<p style=\"color:red\">Hi</p>", "after": "<p>Hi</p>", "copy": "Remove scripts, styles, empty elements, or unwanted attributes from imported markup."}
+        ] %}
+        {% set tool_features = [
+            {"title": "Beautify or minify", "copy": "Create readable, indented HTML or compact markup for production use."},
+            {"title": "Targeted element cleanup", "copy": "Remove comments, scripts, styles, empty elements, and unwanted attributes."},
+            {"title": "Configurable output", "copy": "Control indentation, formatting mode, and entity handling for the final markup."}
+        ] %}
+        {% set tool_steps = [
+            {"title": "Paste HTML markup", "copy": "Add a full document or HTML fragment to the Input field."},
+            {"title": "Choose HTML options", "copy": "Select a format mode and any elements or attributes to remove."},
+            {"title": "Clean and export", "copy": "Run HTMLCleanr, review the markup, then copy or download it."}
+        ] %}
+        {% set tool_faqs = [
+            {"question": "Can HTMLCleanr beautify and minify HTML?", "answer": "Yes. Select the formatting mode that matches whether you need readable or compact output."},
+            {"question": "Can I remove scripts and styles?", "answer": "Yes. HTMLCleanr includes options for removing script and style elements from the supplied markup."},
+            {"question": "Does it support HTML entities?", "answer": "Yes. You can configure entity handling alongside indentation and cleanup options."}
+        ] %}
+        {% set related_tools = [
+            {"name": "MarkdownCleanr", "endpoint": "markdown_scrubber", "icon": "file-code-2", "fallback": "MD", "color": "brand-tool-pink", "copy": "Normalize Markdown for documentation and publishing."},
+            {"name": "TextCleanr", "endpoint": "text_scrubber", "icon": "type", "fallback": "T", "color": "brand-tool-blue", "copy": "Clean plain text extracted from web content."},
+            {"name": "JSONCleanr", "endpoint": "json_scrubber", "icon": "braces", "fallback": "{ }", "color": "brand-tool-green", "copy": "Format structured data used by web applications."}
+        ] %}
+        {% include "_tool_seo_intro.html" %}
 
         <div class="shell">
             <aside class="sidebar" aria-label="HTML options">
@@ -241,6 +274,8 @@
 
             </section>
         </div>
+
+        {% include "_tool_seo_details.html" %}
 
         <footer class="app-footer">
             <p>Copyright © 2026 <a href="https://cesardelgado.dev" target="_blank" rel="noopener noreferrer">Cesar

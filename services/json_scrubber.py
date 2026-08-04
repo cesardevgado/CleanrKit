@@ -67,6 +67,26 @@ def remove_null_values(value):
     return value
 
 
+def _is_empty_json_value(value):
+    return value is None or value == "" or value == [] or value == JsonObject()
+
+
+def remove_empty_values(value):
+    if isinstance(value, JsonObject):
+        cleaned_pairs = []
+        for key, child in value:
+            cleaned_child = remove_empty_values(child)
+            if not _is_empty_json_value(cleaned_child):
+                cleaned_pairs.append((key, cleaned_child))
+        return JsonObject(cleaned_pairs)
+
+    if isinstance(value, list):
+        cleaned_items = [remove_empty_values(child) for child in value]
+        return [child for child in cleaned_items if not _is_empty_json_value(child)]
+
+    return value
+
+
 def remove_duplicate_keys(value):
     if isinstance(value, JsonObject):
         seen = set()
@@ -202,11 +222,17 @@ def scrub_json(text, actions):
     if "removeNullValues" in active_actions:
         value = remove_null_values(value)
 
+    if "removeEmptyValues" in active_actions:
+        value = remove_empty_values(value)
+
     if "removeDuplicateKeys" in active_actions:
         value = remove_duplicate_keys(value)
 
     indent = None if "minifyJson" in active_actions else 2
     output = dump_json(value, indent=indent, sort_keys="sortKeys" in active_actions)
+
+    if "escapeJson" in active_actions:
+        output = json.dumps(output, ensure_ascii=False)
 
     return {
         "output": output,

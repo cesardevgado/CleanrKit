@@ -4,21 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSVCleanr</title>
+    {% if task_page is defined and task_page %}
+    {% set seo_title = task_page["seo_title"] %}
+    {% set seo_description = task_page["seo_description"] %}
+    {% else %}
+    {% set seo_title = "CSVCleanr: Free Online CSV Cleaner & Formatter | CleanrKit" %}
+    {% set seo_description = "Clean CSV files online by trimming cells, normalizing headers, removing empty rows, and deleting duplicates with a private browser-based tool." %}
+    {% set seo_endpoint = "csv_scrubber" %}
+    {% endif %}
+    {% include "_seo.html" %}
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8599123009684060"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
-    <main class="app" data-csv-url="{{ url_for('format_csv') }}" aria-label="CSVCleanr CSV formatting tool">
+    <main class="app tool-page" data-csv-url="{{ url_for('format_csv') }}"
+        {% if task_page is defined and task_page %}data-task-action="{{ task_page["action"] }}"
+        data-task-label="{{ task_page["title"] }}" data-default-actions="{{ task_page["actions"] | join(',') }}"{% endif %}
+        aria-label="CSVCleanr CSV formatting tool">
         <header class="topbar">
             <div class="brand">
                 <a class="brand-suite-logo" href="{{ url_for('home') }}" aria-label="CleanrKit home">
                     {% include "_cleanrkit_brand.html" %}
                 </a>
                 <span class="brand-tool-icon brand-tool-cyan" aria-hidden="true"><i data-lucide="table-properties">CSV</i></span>
-                <h1>CSVCleanr</h1>
+                <h1>{{ task_page["title"] if task_page is defined and task_page else "CSVCleanr" }}</h1>
             </div>
             {% include "_mobile_menu_toggle.html" %}
 
@@ -43,12 +54,82 @@
             </div>
         </header>
 
+        {% if task_page is defined and task_page %}
+        {% set tool_name = task_page["title"] %}
+        {% set tool_intro_title = task_page["intro_title"] %}
+        {% set tool_intro_copy = task_page["intro_copy"] %}
+        {% set tool_examples = task_page["examples"] %}
+        {% set tool_features = task_page["features"] %}
+        {% set tool_steps = task_page["steps"] %}
+        {% set tool_faqs = task_page["faqs"] %}
+        {% set full_tool_cta = true %}
+        {% set full_tool_endpoint = "csv_scrubber" %}
+        {% set full_tool_label = "Explore every CSVCleanr feature" %}
+        {% set related_tools = [
+            {"name": "CSVCleanr", "endpoint": "csv_scrubber", "icon": "table-properties", "fallback": "CSV", "color": "brand-tool-cyan", "copy": "Use every CSV cleanup and formatting option."},
+            {"name": "JSONCleanr", "endpoint": "json_scrubber", "icon": "braces", "fallback": "{ }", "color": "brand-tool-green", "copy": "Validate and format structured JSON data."},
+            {"name": "SQLCleanr", "endpoint": "sql_scrubber", "icon": "database", "fallback": "DB", "color": "brand-tool-purple", "copy": "Clean up queries for database workflows."}
+        ] %}
+        {% else %}
+        {% set tool_name = "CSVCleanr" %}
+        {% set tool_intro_title = "Clean and normalize CSV data online" %}
+        {% set tool_intro_copy = "Tidy CSV data by trimming cells, normalizing headers, removing empty rows, and eliminating duplicate records. CSVCleanr provides an instant table preview so you can verify the result before downloading it." %}
+        {% set tool_examples = [
+            {"title": "Clean spreadsheet exports", "before": "Ada··,··London↵↵", "after": "Ada,London", "copy": "Remove empty rows and unwanted cell whitespace from exported spreadsheet data."},
+            {"title": "Normalize column headers", "before": "First Name,EMAIL Address", "after": "first_name,email_address", "copy": "Create consistent, machine-friendly field names for imports and data pipelines."},
+            {"title": "Remove duplicate records", "before": "Ada,42↵Ada,42", "after": "Ada,42", "copy": "Deduplicate repeated rows before analysis, migration, or database ingestion."}
+        ] %}
+        {% set tool_features = [
+            {"title": "Row and cell cleanup", "copy": "Trim cell values, remove empty records, and replace missing data consistently."},
+            {"title": "Header normalization", "copy": "Convert inconsistent column labels into cleaner, predictable field names."},
+            {"title": "Instant table preview", "copy": "Inspect the cleaned rows and columns before exporting your CSV."}
+        ] %}
+        {% set tool_steps = [
+            {"title": "Paste CSV content", "copy": "Add comma-separated data to the Input field."},
+            {"title": "Configure the cleanup", "copy": "Choose how to handle headers, whitespace, duplicates, and empty values."},
+            {"title": "Clean and verify", "copy": "Run CSVCleanr, inspect the preview, then copy or download the CSV."}
+        ] %}
+        {% set tool_faqs = [
+            {"question": "Can CSVCleanr remove duplicate rows?", "answer": "Yes. Enable duplicate-row removal to keep only the first occurrence of each identical record."},
+            {"question": "Can I preview the cleaned CSV?", "answer": "Yes. The table preview lets you inspect rows and columns before copying or downloading the result."},
+            {"question": "What happens to empty cells?", "answer": "You can keep empty cells or replace them with a custom value while cleaning the file."}
+        ] %}
+        {% set related_tools = [
+            {"name": "JSONCleanr", "endpoint": "json_scrubber", "icon": "braces", "fallback": "{ }", "color": "brand-tool-green", "copy": "Validate and format structured JSON data."},
+            {"name": "SQLCleanr", "endpoint": "sql_scrubber", "icon": "database", "fallback": "DB", "color": "brand-tool-purple", "copy": "Clean up queries for database workflows."},
+            {"name": "TextCleanr", "endpoint": "text_scrubber", "icon": "type", "fallback": "T", "color": "brand-tool-blue", "copy": "Normalize text before importing it as data."}
+        ] %}
+        {% endif %}
+        {% include "_tool_seo_intro.html" %}
+
         <div class="shell">
             <aside class="sidebar" aria-label="CSV options">
                 <h2>Clean &amp; Format</h2>
                 {% include "_sidebar_toggle.html" %}
 
+                {% if task_page is defined and task_page %}
+                <div class="task-primary-option" aria-label="Selected CSV action"></div>
+                <p class="task-full-tool-link">Need more CSV tools? Visit the
+                    <a href="{{ url_for('csv_scrubber') }}">CSVCleanr Free Online Tool</a>.
+                </p>
+                <details class="task-advanced-options">
+                    <summary>Advanced Options</summary>
+                    <div class="task-advanced-content">
+                {% endif %}
+
                 <div class="option-list">
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="prettyFormatCsv">
+                            <span>Pretty format CSV</span>
+                        </label>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="standardCleanup">
+                            <span>Standard cleanup</span>
+                        </label>
+                    </div>
                     <div class="option-row">
                         <label class="option">
                             <input type="checkbox" data-action="removeDuplicateRows" checked>
@@ -78,6 +159,51 @@
                 <div class="option-list">
                     <div class="option-row">
                         <label class="option">
+                            <input type="checkbox" data-action="sortRows">
+                            <span>Sort rows</span>
+                        </label>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="standardizeCsv">
+                            <span>Standardize CSV</span>
+                        </label>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="validateCsv" checked>
+                            <span>Validate CSV</span>
+                        </label>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="convertDelimiter">
+                            <span>Convert comma ↔ tab</span>
+                        </label>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeEmptyColumns">
+                            <span>Remove empty columns</span>
+                        </label>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="tableView">
+                            <span>Table view</span>
+                        </label>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="cleanupCsv">
+                            <span>CSV cleanup</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="option-list">
+                    <div class="option-row">
+                        <label class="option">
                             <input type="checkbox" data-action="replaceNullValues">
                             <span>Replace null values</span>
                         </label>
@@ -85,6 +211,11 @@
                     <label class="field-label" for="nullReplacement">Replacement</label>
                     <input class="text-input" type="text" id="nullReplacement" value="" placeholder="Blank">
                 </div>
+
+                {% if task_page is defined and task_page %}
+                    </div>
+                </details>
+                {% endif %}
 
                 <dl class="json-stats" aria-label="CSV statistics">
                     <div>
@@ -189,7 +320,7 @@
                 <section class="csv-preview" aria-labelledby="previewHeading">
                     <div class="csv-preview-header">
                         <h2 class="pane-title" id="previewHeading">Preview</h2>
-                        <span id="csvStatus">Ready</span>
+                        <span id="csvStatus"{% if initial_valid is defined and not initial_valid %} class="is-invalid"{% endif %}>{{ validation_message if validation_message is defined else "Ready" }}</span>
                     </div>
                     <div class="csv-table-wrap">
                         <table class="csv-table" id="csvPreviewTable"></table>
@@ -198,6 +329,8 @@
 
             </section>
         </div>
+
+        {% include "_tool_seo_details.html" %}
 
         <footer class="app-footer">
             <p>Copyright © 2026 <a href="https://cesardelgado.dev" target="_blank" rel="noopener noreferrer">Cesar

@@ -14,14 +14,19 @@ Carla Ruiz,carla@example.com,n/a,2026-07-12
 NULL_TOKENS = {"", "null", "none", "n/a", "na", "nil"}
 
 
-def parse_csv(text):
-    reader = csv.reader(io.StringIO(text))
+def detect_delimiter(text):
+    first_line = text.splitlines()[0] if text.splitlines() else ""
+    return "\t" if first_line.count("\t") > first_line.count(",") else ","
+
+
+def parse_csv(text, delimiter=","):
+    reader = csv.reader(io.StringIO(text), delimiter=delimiter, strict=True)
     return [row for row in reader]
 
 
-def write_csv(rows):
+def write_csv(rows, delimiter=","):
     buffer = io.StringIO()
-    writer = csv.writer(buffer, lineterminator="\n")
+    writer = csv.writer(buffer, delimiter=delimiter, lineterminator="\n")
     writer.writerows(rows)
     return buffer.getvalue()
 
@@ -83,6 +88,40 @@ def remove_duplicate_rows(rows):
         cleaned_rows.append(row)
 
     return cleaned_rows, removed
+
+
+def sort_rows(rows):
+    if len(rows) <= 1:
+        return rows
+
+    return [rows[0], *sorted(rows[1:], key=lambda row: tuple(cell.casefold() for cell in row))]
+
+
+def remove_empty_columns(rows):
+    rectangular_rows = rectangularize_rows(rows)
+    if not rectangular_rows:
+        return rows, 0
+
+    data_rows = rectangular_rows[1:]
+    kept_indices = [
+        index
+        for index in range(len(rectangular_rows[0]))
+        if any(row[index].strip() for row in data_rows)
+    ]
+    removed = len(rectangular_rows[0]) - len(kept_indices)
+    return [[row[index] for index in kept_indices] for row in rectangular_rows], removed
+
+
+def validate_rows(rows):
+    if not rows:
+        return
+
+    expected_columns = len(rows[0])
+    for row_number, row in enumerate(rows[1:], start=2):
+        if len(row) != expected_columns:
+            raise csv.Error(
+                f"Row {row_number} has {len(row)} columns; expected {expected_columns}."
+            )
 
 
 def replace_null_values(rows, replacement):
@@ -157,7 +196,22 @@ def get_csv_statistics(rows, duplicate_rows_removed=0, empty_rows_removed=0, nul
 
 def scrub_csv(text, actions, null_replacement=""):
     active_actions = set(actions)
-    rows = parse_csv(text)
+    if "standardCleanup" in active_actions:
+        active_actions.update(
+            {"trimCells", "normalizeHeaders", "removeEmptyRows", "removeDuplicateRows"}
+        )
+    if "standardizeCsv" in active_actions:
+        active_actions.update({"trimCells", "normalizeHeaders"})
+    if "cleanupCsv" in active_actions:
+        active_actions.update({"trimCells", "removeEmptyRows", "removeEmptyColumns"})
+
+    input_delimiter = detect_delimiter(text)
+    output_delimiter = (
+        "\t" if input_delimiter == "," else ","
+    ) if "convertDelimiter" in active_actions else input_delimiter
+    rows = parse_csv(text, delimiter=input_delimiter)
+    if "validateCsv" in active_actions:
+        validate_rows(rows)
     duplicate_rows_removed = 0
     empty_rows_removed = 0
     null_values_replaced = 0
@@ -177,7 +231,13 @@ def scrub_csv(text, actions, null_replacement=""):
     if "removeDuplicateRows" in active_actions:
         rows, duplicate_rows_removed = remove_duplicate_rows(rows)
 
-    output = write_csv(rows)
+    if "removeEmptyColumns" in active_actions:
+        rows, _empty_columns_removed = remove_empty_columns(rows)
+
+    if "sortRows" in active_actions:
+        rows = sort_rows(rows)
+
+    output = write_csv(rows, delimiter=output_delimiter)
 
     return {
         "output": output,

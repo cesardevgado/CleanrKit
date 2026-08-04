@@ -1,4 +1,5 @@
-const formatUrl = document.querySelector(".app").dataset.formatUrl;
+const app = document.querySelector(".app");
+const formatUrl = app.dataset.formatUrl;
 const inputText = document.querySelector("#inputText");
 const outputText = document.querySelector("#outputText");
 const inputCharacterCount = document.querySelector("#inputCharacterCount");
@@ -17,13 +18,20 @@ const checkboxes = Array.from(document.querySelectorAll("[data-action]"));
 const subOptionGroups = Array.from(
   document.querySelectorAll("[data-parent-action]"),
 );
-const defaultActions = new Set([
-  "removeLineBreaks",
-  "replaceLineBreaksWithWhitespace",
-  "removeBlankLines",
-  "collapseSpaces",
-  "trimWhitespace",
-]);
+const configuredDefaultActions = (app.dataset.defaultActions || "")
+  .split(",")
+  .filter(Boolean);
+const defaultActions = new Set(
+  configuredDefaultActions.length
+    ? configuredDefaultActions
+    : [
+        "removeLineBreaks",
+        "replaceLineBreaksWithWhitespace",
+        "removeBlankLines",
+        "collapseSpaces",
+        "trimWhitespace",
+      ],
+);
 const initialText = inputText.value;
 const minimumProcessingMs = 500;
 const formatErrorMessage = "Unable to format text.\nPlease try again.";
@@ -59,6 +67,24 @@ function applyDefaultActions() {
   checkboxes.forEach((box) => {
     box.checked = defaultActions.has(box.dataset.action);
   });
+}
+
+function setupTaskOptions() {
+  const taskAction = app.dataset.taskAction;
+  const primaryOption = document.querySelector(".task-primary-option");
+
+  if (!taskAction || !primaryOption) {
+    return;
+  }
+
+  const taskCheckbox = checkboxes.find(
+    (box) => box.dataset.action === taskAction,
+  );
+  const taskRow = taskCheckbox?.closest(".option-row");
+
+  if (taskRow) {
+    primaryOption.append(taskRow);
+  }
 }
 
 function updateSelectedCount() {
@@ -230,6 +256,7 @@ document.querySelector("#downloadOutput").addEventListener("click", () => {
 });
 
 inputText.value = initialText;
+setupTaskOptions();
 applyDefaultActions();
 syncSubOptions();
 refresh();

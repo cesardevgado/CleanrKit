@@ -1,4 +1,5 @@
-const csvUrl = document.querySelector(".app").dataset.csvUrl;
+const app = document.querySelector(".app");
+const csvUrl = app.dataset.csvUrl;
 const inputCsv = document.querySelector("#inputCsv");
 const outputCsv = document.querySelector("#outputCsv");
 const formatButton = document.querySelector("#formatNow");
@@ -13,12 +14,20 @@ const inputLineCount = document.querySelector("#inputLineCount");
 const outputCharacterCount = document.querySelector("#outputCharacterCount");
 const outputLineCount = document.querySelector("#outputLineCount");
 const initialCsv = inputCsv.value;
-const defaultActions = new Set([
-  "removeDuplicateRows",
-  "removeEmptyRows",
-  "trimCells",
-  "normalizeHeaders",
-]);
+const configuredDefaultActions = (app.dataset.defaultActions || "")
+  .split(",")
+  .filter(Boolean);
+const defaultActions = new Set(
+  configuredDefaultActions.length
+    ? configuredDefaultActions
+    : [
+        "removeDuplicateRows",
+        "removeEmptyRows",
+        "trimCells",
+        "normalizeHeaders",
+        "validateCsv",
+      ],
+);
 const minimumProcessingMs = 350;
 let toastTimer;
 let refreshTimer;
@@ -43,6 +52,28 @@ function applyDefaultActions() {
   controls.forEach((control) => {
     control.checked = defaultActions.has(control.dataset.action);
   });
+}
+
+function setupTaskOptions() {
+  const taskAction = app.dataset.taskAction;
+  const primaryOption = document.querySelector(".task-primary-option");
+
+  if (!taskAction || !primaryOption) {
+    return;
+  }
+
+  const taskControl = controls.find(
+    (control) => control.dataset.action === taskAction,
+  );
+  const taskRow = taskControl?.closest(".option-row");
+
+  if (taskRow) {
+    const label = taskRow.querySelector(".option > span");
+    if (label && app.dataset.taskLabel) {
+      label.textContent = app.dataset.taskLabel;
+    }
+    primaryOption.append(taskRow);
+  }
 }
 
 function formatNumber(value) {
@@ -243,5 +274,6 @@ document.querySelector("#downloadOutput").addEventListener("click", () => {
 });
 
 inputCsv.value = initialCsv;
+setupTaskOptions();
 applyDefaultActions();
 refresh();

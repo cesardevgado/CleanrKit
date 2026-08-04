@@ -4,21 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TextCleanr</title>
+    {% if task_page is defined and task_page %}
+    {% set seo_title = task_page["seo_title"] %}
+    {% set seo_description = task_page["seo_description"] %}
+    {% else %}
+    {% set seo_title = "TextCleanr: Free Online Text Cleaner & Formatter | CleanrKit" %}
+    {% set seo_description = "Clean and format messy text online. Remove extra spaces, line breaks, tabs, URLs,
+    punctuation, and more with the private TextCleanr browser tool." %}
+    {% set seo_endpoint = "text_scrubber" %}
+    {% endif %}
+    {% include "_seo.html" %}
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8599123009684060"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
-    <main class="app" data-format-url="{{ url_for('format_text') }}" aria-label="TextCleanr text formatting tool">
+    <main class="app tool-page" data-format-url="{{ url_for('format_text') }}"
+        {% if task_page is defined and task_page %}data-task-action="{{ task_page["action"] }}"
+        data-default-actions="{{ task_page["actions"] | join(',') }}"{% endif %}
+        aria-label="TextCleanr text formatting tool">
         <header class="topbar">
             <div class="brand">
                 <a class="brand-suite-logo" href="{{ url_for('home') }}" aria-label="CleanrKit home">
                     {% include "_cleanrkit_brand.html" %}
                 </a>
                 <span class="brand-tool-icon brand-tool-blue" aria-hidden="true"><i data-lucide="type">T</i></span>
-                <h1>TextCleanr</h1>
+                <h1>{{ task_page["title"] if task_page is defined and task_page else "TextCleanr" }}</h1>
             </div>
             {% include "_mobile_menu_toggle.html" %}
 
@@ -43,10 +55,85 @@
             </div>
         </header>
 
+        {% if task_page is defined and task_page %}
+        {% set tool_name = task_page["title"] %}
+        {% set tool_intro_title = task_page["intro_title"] %}
+        {% set tool_intro_copy = task_page["intro_copy"] %}
+        {% set tool_examples = task_page["examples"] %}
+        {% set tool_features = task_page["features"] %}
+        {% set tool_steps = task_page["steps"] %}
+        {% set tool_faqs = task_page["faqs"] %}
+        {% set full_tool_cta = true %}
+        {% set related_tools = [
+        {"name": "TextCleanr", "endpoint": "text_scrubber", "icon": "type", "fallback": "T", "color":
+        "brand-tool-blue", "copy": "Use every text cleanup option in the complete tool."},
+        {"name": "JSONCleanr", "endpoint": "json_scrubber", "icon": "braces", "fallback": "{ }", "color":
+        "brand-tool-green", "copy": "Format, validate, and clean structured JSON data."},
+        {"name": "MarkdownCleanr", "endpoint": "markdown_scrubber", "icon": "file-code-2", "fallback": "MD", "color":
+        "brand-tool-pink", "copy": "Normalize Markdown structure and spacing."}
+        ] %}
+        {% else %}
+        {% set tool_name = "TextCleanr" %}
+        {% set tool_intro_title = "Clean and format text online" %}
+        {% set tool_intro_copy = "Fix messy text in seconds by removing unwanted spaces, line breaks, tabs, punctuation,
+        URLs, and other inconsistencies. TextCleanr gives you precise cleanup controls and instant results directly in
+        your browser." %}
+        {% set tool_examples = [
+        {"title": "Remove extra whitespace", "before": "Is··that⇥you···John····Wayne?↵↵Is this⇥⇥me?",
+        "after": "Is that you John Wayne?\nIs this me?", "copy":
+        "Turn repeated spaces, tabs, and uneven line breaks into clean, readable text."},
+        {"title": "Prepare text for publishing", "before": "“Totö, I’ve a fẽeling we're not in Kànsas anymore”",
+        "after": "\"Toto, I've a feeling we're not in Kansas anymore\"", "copy":
+        "Normalize quotes, punctuation, Unicode characters, and capitalization before you publish."},
+        {"title": "Clean copied content", "before": "Visit Example example.com · #123 for all the latest news.",
+        "after": "Visit Example for all the latest news.", "copy": "Strip URLs,
+        numbers, blank lines, or non-ASCII characters from imported text."}
+        ] %}
+        {% set tool_features = [
+        {"title": "Flexible cleanup controls", "copy": "Choose exactly which whitespace, characters, and formatting
+        patterns to remove or normalize."},
+        {"title": "Live text statistics", "copy": "Track characters, words, sentences, paragraphs, and lines before and
+        after cleaning."},
+        {"title": "Copy or download", "copy": "Move the finished text to your clipboard or save it as a text file."}
+        ] %}
+        {% set tool_steps = [
+        {"title": "Paste your text", "copy": "Add messy or unformatted content to the Input field."},
+        {"title": "Choose cleanup options", "copy": "Select the formatting rules that fit your content."},
+        {"title": "Clean and export", "copy": "Run TextCleanr, review the output, then copy or download it."}
+        ] %}
+        {% set tool_faqs = [
+        {"question": "What can TextCleanr remove?", "answer": "You can remove or normalize line breaks, blank lines,
+        spaces, tabs, punctuation, numbers, URLs, smart quotes, and non-ASCII characters."},
+        {"question": "Does TextCleanr upload my text?", "answer": "Never! Your text is processed on the page and isn't
+        stored by CleanrKit."},
+        {"question": "Can I download the cleaned text?", "answer": "Yes. You can copy the result or download it as a
+        text file after cleaning."}
+        ] %}
+        {% set related_tools = [
+        {"name": "JSONCleanr", "endpoint": "json_scrubber", "icon": "braces", "fallback": "{ }", "color":
+        "brand-tool-green", "copy": "Format, validate, and clean structured JSON data."},
+        {"name": "MarkdownCleanr", "endpoint": "markdown_scrubber", "icon": "file-code-2", "fallback": "MD", "color":
+        "brand-tool-pink", "copy": "Normalize Markdown structure and spacing."},
+        {"name": "CSVCleanr", "endpoint": "csv_scrubber", "icon": "table-properties", "fallback": "CSV", "color":
+        "brand-tool-cyan", "copy": "Tidy rows, headers, and duplicate CSV records."}
+        ] %}
+        {% endif %}
+        {% include "_tool_seo_intro.html" %}
+
         <div class="shell">
             <aside class="sidebar" aria-label="Formatting options">
                 <h2>Clean &amp; Format</h2>
                 {% include "_sidebar_toggle.html" %}
+
+                {% if task_page is defined and task_page %}
+                <div class="task-primary-option" aria-label="Selected cleanup action"></div>
+                <p class="task-full-tool-link">Need more cleaning? Visit the
+                    <a href="{{ url_for('text_scrubber') }}">TextCleanr Free Online Tool</a>.
+                </p>
+                <details class="task-advanced-options">
+                    <summary>Advanced Options</summary>
+                    <div class="task-advanced-content">
+                {% endif %}
 
                 <div class="option-list">
                     <div class="option-row">
@@ -82,6 +169,17 @@
                             <span class="option-popover" role="tooltip">Hello<br><br> world<br><span
                                     class="after-arrow">↓</span><br>Hello
                                 <br>world</span>
+                        </button>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeDuplicateLines">
+                            <span>Remove duplicate lines</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Remove duplicate lines example">
+                            ?
+                            <span class="option-popover" role="tooltip">Alpha<br>Beta<br>Alpha<br><span
+                                    class="after-arrow">↓</span><br>Alpha<br>Beta</span>
                         </button>
                     </div>
                     <div class="option-row">
@@ -195,6 +293,28 @@
                                 Visit</span>
                         </button>
                     </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="removeEmojis">
+                            <span>Remove emojis</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Remove emojis example">
+                            ?
+                            <span class="option-popover" role="tooltip">Great work 🎉<br><span
+                                    class="after-arrow">↓</span><br>Great work</span>
+                        </button>
+                    </div>
+                    <div class="option-row">
+                        <label class="option">
+                            <input type="checkbox" data-action="stripHtml">
+                            <span>Strip HTML</span>
+                        </label>
+                        <button class="option-help" type="button" aria-label="Strip HTML example">
+                            ?
+                            <span class="option-popover" role="tooltip">&lt;strong&gt;Hello&lt;/strong&gt;<br><span
+                                    class="after-arrow">↓</span><br>Hello</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="option-list">
@@ -253,6 +373,10 @@
                     <span class="selected-count" id="selectedCount">0 selected</span>
                     <button class="reset-button" type="button" id="resetOptions">Reset</button>
                 </div>
+                {% if task_page is defined and task_page %}
+                    </div>
+                </details>
+                {% endif %}
             </aside>
 
             <section class="workspace">
@@ -337,6 +461,8 @@
                 </div>
             </section>
         </div>
+
+        {% include "_tool_seo_details.html" %}
 
         <footer class="app-footer">
             <p>Copyright © 2026 <a href="https://cesardelgado.dev" target="_blank" rel="noopener noreferrer">Cesar

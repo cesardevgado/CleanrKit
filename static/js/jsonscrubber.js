@@ -1,4 +1,5 @@
-const jsonUrl = document.querySelector(".app").dataset.jsonUrl;
+const app = document.querySelector(".app");
+const jsonUrl = app.dataset.jsonUrl;
 const inputJson = document.querySelector("#inputJson");
 const outputJson = document.querySelector("#outputJson");
 const formatButton = document.querySelector("#formatNow");
@@ -14,7 +15,14 @@ const inputLineNumbers = document.querySelector("#inputLineNumbers");
 const outputLineNumbers = document.querySelector("#outputLineNumbers");
 const inputErrorLine = document.querySelector("#inputErrorLine");
 const initialJson = inputJson.value;
-const defaultActions = new Set(["prettyPrintJson", "sortKeys", "removeDuplicateKeys"]);
+const configuredDefaultActions = (app.dataset.defaultActions || "")
+  .split(",")
+  .filter(Boolean);
+const defaultActions = new Set(
+  configuredDefaultActions.length
+    ? configuredDefaultActions
+    : ["prettyPrintJson", "validateJson", "sortKeys", "removeDuplicateKeys"],
+);
 const minimumProcessingMs = 350;
 let toastTimer;
 let refreshTimer;
@@ -42,6 +50,24 @@ function applyDefaultActions() {
   controls.forEach((control) => {
     control.checked = defaultActions.has(control.dataset.action);
   });
+}
+
+function setupTaskOptions() {
+  const taskAction = app.dataset.taskAction;
+  const primaryOption = document.querySelector(".task-primary-option");
+
+  if (!taskAction || !primaryOption) {
+    return;
+  }
+
+  const taskControl = controls.find(
+    (control) => control.dataset.action === taskAction,
+  );
+  const taskRow = taskControl?.closest(".option-row");
+
+  if (taskRow) {
+    primaryOption.append(taskRow);
+  }
 }
 
 function formatNumber(value) {
@@ -261,6 +287,7 @@ document.querySelector("#downloadOutput").addEventListener("click", () => {
 });
 
 inputJson.value = initialJson;
+setupTaskOptions();
 applyDefaultActions();
 syncFormatMode();
 refresh();
