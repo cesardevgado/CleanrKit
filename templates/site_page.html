@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% set seo_title = page.title ~ " | CleanrKit" %}
+    {% set seo_description = page.description %}
+    {% set seo_canonical_url = request.url %}
+    {% include "_seo.html" %}
+    <script>if (window.matchMedia("(prefers-color-scheme: dark)").matches) document.documentElement.classList.add("dark");</script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage.css') }}">
+</head>
+<body class="suite-page landing-page info-page">
+    <main class="suite-home landing-shell">
+        <header class="suite-topbar landing-header">
+            <a class="suite-logo landing-logo" href="{{ url_for('home') }}" aria-label="CleanrKit home">{% include "_cleanrkit_brand.html" %}</a>
+            {% include "_mobile_menu_toggle.html" %}
+            <nav class="suite-nav landing-nav" aria-label="Main navigation">
+                {% include "_tools_menu.html" %}
+                <a href="{{ url_for('features') }}"{% if page_key == 'features' %} aria-current="page"{% endif %}>Features</a>
+                <a href="{{ url_for('about') }}"{% if page_key == 'about' %} aria-current="page"{% endif %}>About</a>
+                <a href="{{ url_for('contact') }}"{% if page_key == 'contact' %} aria-current="page"{% endif %}>Contact</a>
+            </nav>
+            <div class="suite-header-actions landing-actions">
+                {% include "_theme_toggle.html" %}
+                <a class="landing-button landing-button-small" href="{{ url_for('text_scrubber') }}">Open app</a>
+            </div>
+        </header>
+
+        <article class="info-shell">
+            <header class="info-hero">
+                <p class="section-kicker">{{ page.eyebrow }}</p>
+                <h1>{{ page.title }}</h1>
+                <p>{{ page.description }}</p>
+                {% if page_key in ['privacy', 'terms'] %}<span>Last updated August 7, 2026</span>{% endif %}
+            </header>
+
+            <div class="info-content">
+            {% if page_key == 'features' %}
+                <section class="feature-intro"><h2>Everything you need to clean up messy input</h2><p>CleanrKit brings six purpose-built cleaners into one consistent workspace. Choose only the transformations you need, compare input and output, and copy or download a cleaner result without wrestling with regular expressions or complicated settings.</p></section>
+                <div class="feature-page-grid">
+                    <a class="feature-page-card feature-blue" href="{{ url_for('text_scrubber') }}"><span>T</span><div><h2>TextCleanr</h2><p>Remove unwanted spacing, breaks, tabs, URLs, punctuation, and other text inconsistencies.</p><strong>Explore TextCleanr →</strong></div></a>
+                    <a class="feature-page-card feature-green" href="{{ url_for('json_scrubber') }}"><span>{ }</span><div><h2>JSONCleanr</h2><p>Validate, format, sort, and normalize JSON while catching malformed data clearly.</p><strong>Explore JSONCleanr →</strong></div></a>
+                    <a class="feature-page-card feature-cyan" href="{{ url_for('csv_scrubber') }}"><span>CSV</span><div><h2>CSVCleanr</h2><p>Trim cells, normalize headers, remove empty rows, and eliminate duplicate records.</p><strong>Explore CSVCleanr →</strong></div></a>
+                    <a class="feature-page-card feature-orange" href="{{ url_for('html_scrubber') }}"><span>&lt;/&gt;</span><div><h2>HTMLCleanr</h2><p>Beautify or minify markup, remove comments, and clean scripts or styles when needed.</p><strong>Explore HTMLCleanr →</strong></div></a>
+                    <a class="feature-page-card feature-pink" href="{{ url_for('markdown_scrubber') }}"><span>MD</span><div><h2>MarkdownCleanr</h2><p>Normalize headings, spacing, links, and Markdown structure for consistent output.</p><strong>Explore MarkdownCleanr →</strong></div></a>
+                    <a class="feature-page-card feature-purple" href="{{ url_for('sql_scrubber') }}"><span>DB</span><div><h2>SQLCleanr</h2><p>Format queries, normalize whitespace, and apply consistent keyword casing and indentation.</p><strong>Explore SQLCleanr →</strong></div></a>
+                </div>
+                <section><h2>Built around your workflow</h2><div class="suite-feature-list"><article><strong>No account required</strong><p>Open a cleaner and start working immediately.</p></article><article><strong>Fast previews</strong><p>See the result and useful statistics without a complicated setup.</p></article><article><strong>Privacy-conscious</strong><p>Your input is not intentionally retained as saved user content.</p></article><article><strong>Light and dark themes</strong><p>Use a comfortable interface across desktop and mobile screens.</p></article></div></section>
+                <aside class="info-note"><strong>CleanrKit is in beta.</strong><span>Features continue to improve, and your feedback helps decide what comes next.</span></aside>
+            {% elif page_key == 'about' %}
+                <section><h2>Useful cleanup without the friction</h2><p>CleanrKit is a growing collection of focused tools for cleaning, formatting, and validating text and structured data. It was created around a simple idea: everyday cleanup work should be fast, understandable, and available without installing software or creating an account.</p></section>
+                <section><h2>Privacy-first by design</h2><p>The cleaners are designed to process your input in the browser whenever possible. CleanrKit does not require an account, and the text or data you enter into a cleaner is not intentionally retained as user content.</p></section>
+                <section class="creator-card"><p class="section-kicker">Independent and human</p><h2>Built by Cesar Delgado</h2><p>CleanrKit is an independent product created and maintained by Cesar Delgado, a designer and developer focused on building practical, approachable digital tools.</p><a class="text-link" href="https://cesardelgado.dev/" target="_blank" rel="noopener noreferrer">Visit Cesar’s portfolio <span aria-hidden="true">↗</span></a></section>
+                <section><h2>Still in beta</h2><p>CleanrKit is currently in beta, so features and details may evolve as the suite grows. Feedback and bug reports directly shape what gets improved next.</p></section>
+            {% elif page_key == 'privacy' %}
+                <section><h2>Overview</h2><p>CleanrKit is built to minimize the personal information needed to use its tools. You can use the cleaners without registering or creating a profile.</p></section>
+                <section><h2>Content you process</h2><p>CleanrKit does not intentionally store the text, code, or structured data you enter into a cleaner as user content. Processing may involve requests to the application server to produce a result, but input is not designed to be saved to a user account or content database. Avoid submitting secrets or highly sensitive information to any online service.</p></section>
+                <section><h2>Technical and usage data</h2><p>Like most websites, hosting infrastructure may process limited technical information such as IP address, browser type, device information, requested pages, and timestamps for security, reliability, and diagnostics.</p></section>
+                <section><h2>Cookies, analytics, and advertising</h2><p>CleanrKit may use local browser storage to remember preferences such as theme. The site may also use third-party analytics or advertising services, including Google AdSense, which may use cookies or similar technologies under their own privacy policies.</p></section>
+                <section><h2>Third-party links</h2><p>Links to external websites are governed by those websites’ policies. CleanrKit is not responsible for their privacy practices.</p></section>
+                <section><h2>Your choices and contact</h2><p>You can restrict cookies through your browser and leave fields empty when contacting us if information is optional. For privacy questions, use the <a href="{{ url_for('contact') }}">contact page</a>.</p></section>
+            {% elif page_key == 'terms' %}
+                <section><h2>Acceptance</h2><p>By accessing or using CleanrKit, you agree to these terms. If you do not agree, please do not use the website or its tools.</p></section>
+                <section><h2>Permitted use</h2><p>You may use CleanrKit for lawful personal or business purposes. You may not misuse the service, attempt to disrupt it, probe it for vulnerabilities without permission, automate abusive traffic, or use it to violate another person’s rights.</p></section>
+                <section><h2>Your content</h2><p>You remain responsible for content you submit and for confirming that you have the right to process it. CleanrKit does not claim ownership of content entered into its tools.</p></section>
+                <section><h2>Beta service and availability</h2><p>CleanrKit is currently offered in beta. Features may change, contain errors, or become temporarily unavailable. We may modify or discontinue parts of the service without notice.</p></section>
+                <section><h2>No warranties</h2><p>The service is provided “as is” and “as available,” without warranties of accuracy, reliability, fitness for a particular purpose, or uninterrupted availability. Always review generated output before relying on it.</p></section>
+                <section><h2>Limitation of liability</h2><p>To the fullest extent permitted by law, CleanrKit and its creator will not be liable for indirect, incidental, special, consequential, or punitive damages arising from use of the service.</p></section>
+                <section><h2>Changes</h2><p>These terms may be updated as the product evolves. Continued use after an update means you accept the revised terms. Questions can be sent through the <a href="{{ url_for('contact') }}">contact page</a>.</p></section>
+            {% elif page_key == 'contact' %}
+                <section><h2>General inquiries</h2><p>Have a question, collaboration idea, or feedback about CleanrKit? Reach Cesar through his portfolio and include “CleanrKit” in your message so it reaches the right place.</p><a class="info-action" href="https://cesardelgado.dev/" target="_blank" rel="noopener noreferrer">Contact via portfolio <span aria-hidden="true">↗</span></a></section>
+                <section><h2>Found a problem?</h2><p>For reproducible product issues, the bug report guide helps you include the browser, tool, expected result, and steps we need to investigate.</p><a class="text-link" href="{{ url_for('report_bug') }}">Report a bug →</a></section>
+                <aside class="info-note"><strong>Please don’t send sensitive data.</strong><span>Remove passwords, API keys, private records, and confidential content from examples before sharing them.</span></aside>
+            {% elif page_key == 'changelog' %}
+                <section class="release"><div><span>Current</span><time datetime="2026-08-07">August 7, 2026</time></div><h2>v0.1.0-beta</h2><p>The first documented CleanrKit beta release.</p><ul><li>Six focused cleaners for Text, JSON, CSV, HTML, Markdown, and SQL.</li><li>Task-specific landing pages and expanded search discovery.</li><li>Responsive tool layouts with light and dark themes.</li><li>New company, policy, roadmap, and support pages.</li></ul></section>
+                <section><h2>How versioning works</h2><p>While CleanrKit is in beta, releases use a <strong>0.x</strong> version. Minor versions may include meaningful feature changes; patch versions focus on smaller improvements and fixes.</p></section>
+            {% elif page_key == 'roadmap' %}
+                <div class="roadmap-grid">
+                    <section><span class="status status-now">Now</span><h2>Beta foundations</h2><ul><li>Improve reliability across all six cleaners</li><li>Expand task-focused workflows</li><li>Strengthen accessibility and mobile behavior</li><li>Collect and act on early feedback</li></ul></section>
+                    <section><span class="status status-next">Next</span><h2>Better workflows</h2><ul><li>Undo and redo support</li><li>Download cleaned results</li><li>Keyboard shortcuts</li><li>More configurable cleanup options</li></ul></section>
+                    <section><span class="status status-later">Exploring</span><h2>A broader kit</h2><ul><li>Reusable cleanup presets</li><li>Local file workflows</li><li>Additional specialist cleaners</li><li>Optional saved preferences</li></ul></section>
+                </div>
+                <aside class="info-note"><strong>Plans can change.</strong><span>This roadmap communicates direction, not guaranteed dates or commitments. Beta feedback helps determine the order.</span></aside>
+            {% elif page_key == 'report-bug' %}
+                <section><h2>Before you report</h2><ol><li>Refresh the page and try the action again.</li><li>Confirm the issue occurs with a small, non-sensitive example.</li><li>Check that your browser is up to date.</li></ol></section>
+                <section><h2>What to include</h2><ul><li>The cleaner and option you were using</li><li>What you expected and what happened instead</li><li>Clear steps to reproduce the problem</li><li>Your browser, device, and operating system</li><li>A sanitized example or screenshot, if useful</li></ul><a class="info-action" href="https://github.com/cesardevgado/TextScrubbr/issues/new" target="_blank" rel="noopener noreferrer">Open a GitHub issue <span aria-hidden="true">↗</span></a></section>
+                <aside class="info-note"><strong>Protect your information.</strong><span>Never include passwords, API keys, personal records, or confidential source material in a public report.</span></aside>
+            {% endif %}
+            </div>
+        </article>
+
+        <footer class="landing-footer info-footer">
+            <div class="footer-brand"><a class="suite-logo landing-logo" href="{{ url_for('home') }}">{% include "_cleanrkit_brand.html" %}</a><p>Fast, private tools for cleaner content and data.</p></div>
+            {% include "_site_footer_links.html" %}
+            <div class="footer-meta"><p class="footer-copyright">© 2026 <a href="https://cesardelgado.dev/" target="_blank" rel="noopener noreferrer">Cesar Delgado</a></p>{% include "_site_version.html" %}</div>
+        </footer>
+    </main>
+    <script defer src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

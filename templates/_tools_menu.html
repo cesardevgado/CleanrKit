@@ -1,0 +1,11 @@
+<details class="tools-menu">
+    <summary>Tools <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"></path></svg></summary>
+    <div class="tools-menu-panel">
+        <a href="{{ url_for('text_scrubber') }}"><span class="menu-tool-icon menu-tool-blue">T</span><span><strong>TextCleanr</strong><small>Clean and normalize text</small></span></a>
+        <a href="{{ url_for('json_scrubber') }}"><span class="menu-tool-icon menu-tool-green">{ }</span><span><strong>JSONCleanr</strong><small>Format and validate JSON</small></span></a>
+        <a href="{{ url_for('csv_scrubber') }}"><span class="menu-tool-icon menu-tool-cyan">CSV</span><span><strong>CSVCleanr</strong><small>Tidy rows and headers</small></span></a>
+        <a href="{{ url_for('html_scrubber') }}"><span class="menu-tool-icon menu-tool-orange">&lt;/&gt;</span><span><strong>HTMLCleanr</strong><small>Beautify and clean markup</small></span></a>
+        <a href="{{ url_for('markdown_scrubber') }}"><span class="menu-tool-icon menu-tool-pink">MD</span><span><strong>MarkdownCleanr</strong><small>Normalize Markdown</small></span></a>
+        <a href="{{ url_for('sql_scrubber') }}"><span class="menu-tool-icon menu-tool-purple">DB</span><span><strong>SQLCleanr</strong><small>Format readable queries</small></span></a>
+    </div>
+</details>

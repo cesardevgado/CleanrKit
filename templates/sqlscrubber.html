@@ -29,7 +29,7 @@
                 <a class="brand-suite-logo" href="{{ url_for('home') }}" aria-label="CleanrKit home">
                     {% include "_cleanrkit_brand.html" %}
                 </a>
-                <span class="brand-tool-icon brand-tool-purple" aria-hidden="true"><i data-lucide="database">DB</i></span>
+                <span class="brand-tool-icon brand-tool-purple" aria-hidden="true">{% from "_tool_icons.html" import tool_icon %}{{ tool_icon("database") }}</span>
                 <h1>{{ task_page["title"] if task_page is defined and task_page else "SQLCleanr" }}</h1>
             </div>
             {% include "_mobile_menu_toggle.html" %}
@@ -43,6 +43,9 @@
                     <a class="tool-nav-link" href="{{ url_for('html_scrubber') }}">HTML</a>
                     <a class="tool-nav-link" href="{{ url_for('markdown_scrubber') }}">MD</a>
                     <a class="tool-nav-link active" href="{{ url_for('sql_scrubber') }}">SQL</a>
+                    <a class="tool-nav-link tool-nav-company" href="{{ url_for('features') }}">Features</a>
+                    <a class="tool-nav-link tool-nav-company" href="{{ url_for('about') }}">About</a>
+                    <a class="tool-nav-link tool-nav-company" href="{{ url_for('contact') }}">Contact</a>
                 </nav>
                 <button class="clear-button" type="button" id="clearAll" title="Clear all SQL">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
@@ -307,16 +310,15 @@
         {% include "_tool_seo_details.html" %}
 
         <footer class="app-footer">
-            <p>Copyright © 2026 <a href="https://cesardelgado.dev" target="_blank" rel="noopener noreferrer">Cesar
-                    Delgado</a></p>
+            {% include "_site_footer_links.html" %}
+            <div class="app-footer-meta"><p>Copyright © 2026 <a href="https://cesardelgado.dev" target="_blank" rel="noopener noreferrer">Cesar Delgado</a></p>{% include "_site_version.html" %}</div>
         </footer>
     </main>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    {% include "_lucide_icons.html" %}
-    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/sqlscrubber.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/sqlscrubber.js') }}"></script>
 </body>
 
 </html>

@@ -59,6 +59,20 @@ document.querySelectorAll(".mobile-menu-toggle").forEach((toggle) => {
   });
 });
 
+document.querySelectorAll(".tools-menu").forEach((menu) => {
+  document.addEventListener("click", (event) => {
+    if (menu.open && !menu.contains(event.target)) {
+      menu.open = false;
+    }
+  });
+
+  menu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      menu.open = false;
+    });
+  });
+});
+
 document.addEventListener("keydown", (event) => {
   if (event.key !== "Escape") {
     return;
@@ -71,6 +85,11 @@ document.addEventListener("keydown", (event) => {
       closeMobileMenu(header, toggle);
       toggle.focus();
     }
+  });
+
+  document.querySelectorAll(".tools-menu[open]").forEach((menu) => {
+    menu.open = false;
+    menu.querySelector("summary")?.focus();
   });
 });
 

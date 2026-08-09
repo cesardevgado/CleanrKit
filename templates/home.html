@@ -1,3 +1,4 @@
+{%- from "_tool_icons.html" import tool_icon -%}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,9 +26,10 @@
             </a>
             {% include "_mobile_menu_toggle.html" %}
             <nav class="suite-nav landing-nav" aria-label="Homepage navigation">
-                <a href="#tools">Tools</a>
-                <a href="#why-cleanrkit">Features</a>
-                <a href="#about">About</a>
+                {% include "_tools_menu.html" %}
+                <a href="{{ url_for('features') }}">Features</a>
+                <a href="{{ url_for('about') }}">About</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
             </nav>
             <div class="suite-header-actions landing-actions">
                 {% include "_theme_toggle.html" %}
@@ -107,27 +109,27 @@ Let's clean it up!</pre>
             </div>
             <div class="landing-tools-grid">
                 <a class="landing-tool-card tool-blue" href="{{ url_for('text_scrubber') }}">
-                    <span class="tool-icon" aria-hidden="true"><i data-lucide="type">T</i></span>
+                    <span class="tool-icon" aria-hidden="true">{{ tool_icon("type") }}</span>
                     <h3>TextCleanr</h3><p>Clean, format, and normalize text with powerful options.</p><span>Open tool →</span>
                 </a>
                 <a class="landing-tool-card tool-green" href="{{ url_for('json_scrubber') }}">
-                    <span class="tool-icon" aria-hidden="true"><i data-lucide="braces">{ }</i></span>
+                    <span class="tool-icon" aria-hidden="true">{{ tool_icon("braces") }}</span>
                     <h3>JSONCleanr</h3><p>Validate, format, sort, and clean JSON data instantly.</p><span>Open tool →</span>
                 </a>
                 <a class="landing-tool-card tool-orange" href="{{ url_for('html_scrubber') }}">
-                    <span class="tool-icon" aria-hidden="true"><i data-lucide="code-xml">&lt;/&gt;</i></span>
+                    <span class="tool-icon" aria-hidden="true">{{ tool_icon("code-xml") }}</span>
                     <h3>HTMLCleanr</h3><p>Beautify, minify, and clean up HTML markup.</p><span>Open tool →</span>
                 </a>
                 <a class="landing-tool-card tool-purple" href="{{ url_for('sql_scrubber') }}">
-                    <span class="tool-icon" aria-hidden="true"><i data-lucide="database">DB</i></span>
+                    <span class="tool-icon" aria-hidden="true">{{ tool_icon("database") }}</span>
                     <h3>SQLCleanr</h3><p>Format and optimize SQL queries for easier reading.</p><span>Open tool →</span>
                 </a>
                 <a class="landing-tool-card tool-cyan" href="{{ url_for('csv_scrubber') }}">
-                    <span class="tool-icon" aria-hidden="true"><i data-lucide="table-properties">CSV</i></span>
+                    <span class="tool-icon" aria-hidden="true">{{ tool_icon("table-properties") }}</span>
                     <h3>CSVCleanr</h3><p>Tidy rows, normalize headers, and remove duplicates.</p><span>Open tool →</span>
                 </a>
                 <a class="landing-tool-card tool-pink" href="{{ url_for('markdown_scrubber') }}">
-                    <span class="tool-icon" aria-hidden="true"><i data-lucide="file-code-2">MD</i></span>
+                    <span class="tool-icon" aria-hidden="true">{{ tool_icon("file-code-2") }}</span>
                     <h3>MarkdownCleanr</h3><p>Clean and normalize Markdown for consistent output.</p><span>Open tool →</span>
                 </a>
             </div>
@@ -156,14 +158,13 @@ Let's clean it up!</pre>
             <a class="landing-button" href="{{ url_for('text_scrubber') }}">Start with TextCleanr <span aria-hidden="true">→</span></a>
         </section>
 
-        <footer class="landing-footer">
-            <a class="suite-logo landing-logo" href="{{ url_for('home') }}">{% include "_cleanrkit_brand.html" %}</a>
-            <p>Fast, private tools for cleaner content and data.</p>
-            <p>© 2026 <a href="https://cesardelgado.dev/" target="_blank" rel="noopener noreferrer">Cesar Delgado</a></p>
+        <footer class="landing-footer info-footer">
+            <div class="footer-brand"><a class="suite-logo landing-logo" href="{{ url_for('home') }}">{% include "_cleanrkit_brand.html" %}</a><p>Fast, private tools for cleaner content and data.</p></div>
+            {% include "_site_footer_links.html" %}
+            <div class="footer-meta"><p class="footer-copyright">© 2026 <a href="https://cesardelgado.dev/" target="_blank" rel="noopener noreferrer">Cesar Delgado</a></p>{% include "_site_version.html" %}</div>
         </footer>
     </main>
-    {% include "_lucide_icons.html" %}
-    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/theme.js') }}"></script>
 </body>
 
 </html>

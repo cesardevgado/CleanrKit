@@ -1,3 +1,4 @@
+{% from "_tool_icons.html" import tool_icon %}
 <section class="tool-seo-details" aria-label="Learn how to use {{ tool_name }}">
     <div class="tool-content-section tool-examples">
         <p class="tool-seo-kicker">Common uses</p>
@@ -72,7 +73,7 @@
             {% for related in related_tools %}
             <a href="{{ url_for(related["endpoint"]) }}">
                 <span class="brand-tool-icon {{ related["color"] }}" aria-hidden="true">
-                    <i data-lucide="{{ related["icon"] }}">{{ related["fallback"] }}</i>
+                    {{ tool_icon(related["icon"]) }}
                 </span>
                 <div>
                     <h3>{{ related["name"] }}</h3>

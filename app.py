@@ -45,6 +45,49 @@ DEFAULT_ACTIONS = [
     "trimWhitespace",
 ]
 
+SITE_PAGES = {
+    "about": {
+        "title": "About CleanrKit",
+        "eyebrow": "Our story",
+        "description": "Learn why CleanrKit exists, how its privacy-first browser tools work, and who builds them.",
+    },
+    "features": {
+        "title": "CleanrKit Features",
+        "eyebrow": "One kit, focused tools",
+        "description": "Explore the privacy-conscious tools and practical features that make everyday text and data cleanup easier.",
+    },
+    "privacy": {
+        "title": "Privacy Policy",
+        "eyebrow": "Your data, respected",
+        "description": "Learn how CleanrKit handles tool input, analytics, advertising, and other website data.",
+    },
+    "terms": {
+        "title": "Terms of Use",
+        "eyebrow": "The ground rules",
+        "description": "Review the terms that apply when you access and use CleanrKit and its browser tools.",
+    },
+    "contact": {
+        "title": "Contact",
+        "eyebrow": "Let’s talk",
+        "description": "Contact CleanrKit with questions, feedback, partnership ideas, or general inquiries.",
+    },
+    "changelog": {
+        "title": "Changelog",
+        "eyebrow": "What’s new",
+        "description": "Follow new CleanrKit tools, improvements, fixes, and product milestones.",
+    },
+    "roadmap": {
+        "title": "Roadmap",
+        "eyebrow": "Where we’re going",
+        "description": "See what CleanrKit is exploring, building, and improving during beta.",
+    },
+    "report-bug": {
+        "title": "Report a Bug",
+        "eyebrow": "Help us improve",
+        "description": "Report a CleanrKit issue with enough detail for us to investigate and fix it.",
+    },
+}
+
 
 def get_reduction_statistics(input_text, output_text):
     input_length = len(input_text)
@@ -63,6 +106,19 @@ def get_reduction_statistics(input_text, output_text):
 @app.route("/")
 def home():
     return render_template("home.html")
+
+
+@app.route("/about", endpoint="about")
+@app.route("/features", endpoint="features")
+@app.route("/privacy", endpoint="privacy")
+@app.route("/terms", endpoint="terms")
+@app.route("/contact", endpoint="contact")
+@app.route("/changelog", endpoint="changelog")
+@app.route("/roadmap", endpoint="roadmap")
+@app.route("/report-bug", endpoint="report_bug")
+def site_page():
+    page_key = request.path.strip("/")
+    return render_template("site_page.html", page_key=page_key, page=SITE_PAGES[page_key])
 
 
 @app.route("/sitemap.xml")
